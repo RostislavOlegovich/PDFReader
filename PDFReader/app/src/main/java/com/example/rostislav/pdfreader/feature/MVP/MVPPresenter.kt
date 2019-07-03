@@ -1,6 +1,5 @@
 package com.example.rostislav.pdfreader.feature.MVP
 
-
 interface MVPPresenter<V : MVPView> {
     var view: V?
 
