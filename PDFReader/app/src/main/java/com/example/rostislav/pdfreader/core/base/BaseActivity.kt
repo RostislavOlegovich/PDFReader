@@ -1,7 +1,7 @@
 package com.example.rostislav.pdfreader.core.base
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.example.rostislav.pdfreader.core.App
 import com.example.rostislav.pdfreader.feature.main.Presenter
 
