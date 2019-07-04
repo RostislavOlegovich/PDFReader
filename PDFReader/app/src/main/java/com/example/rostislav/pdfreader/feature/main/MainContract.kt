@@ -9,6 +9,7 @@ interface View : MVPView {
     fun showView(file: File) {
     }
 }
+
 interface Presenter : MVPPresenter<View> {
     fun downloadView(string: String, context: Context) {
     }
