@@ -8,6 +8,8 @@ import okhttp3.Response
 import java.io.IOException
 
 class NetworkManager : Network {
+    private val filename = "file"
+
     override fun connectToNetwork(url: String, context: Context) {
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -19,7 +21,6 @@ class NetworkManager : Network {
             }
 
             override fun onResponse(call: okhttp3.Call, response: Response) {
-                val filename = "file"
                 context.openFileOutput(filename, Context.MODE_PRIVATE)
                     .use { it.write(response.body?.bytes()) }
             }

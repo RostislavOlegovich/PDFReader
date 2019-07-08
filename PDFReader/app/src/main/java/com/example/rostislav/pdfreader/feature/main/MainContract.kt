@@ -13,4 +13,6 @@ interface View : MVPView {
 interface Presenter : MVPPresenter<View> {
     fun downloadView(string: String, context: Context) {
     }
+
+    fun getViewFromDatabase(context: Context)
 }

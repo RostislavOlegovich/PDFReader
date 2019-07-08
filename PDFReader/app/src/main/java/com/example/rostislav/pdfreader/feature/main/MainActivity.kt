@@ -13,7 +13,7 @@ class MainActivity : BaseActivity(), View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.attach(this)
-        presenter.downloadView(url, this)
+        checkForFileExist()
     }
 
     override fun onDestroy() {
@@ -24,5 +24,10 @@ class MainActivity : BaseActivity(), View {
     override fun showView(file: File) {
         super.showView(file)
         pdfView.fromFile(file).load()
+    }
+
+    private fun checkForFileExist() {
+//        presenter.getViewFromDatabase(this)
+        presenter.downloadView(url, this)
     }
 }
