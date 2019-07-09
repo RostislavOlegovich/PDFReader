@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.MVP
+package com.example.rostislav.pdfreader.feature.mvp
 
 interface MVPPresenter<V : MVPView> {
     var view: V?
