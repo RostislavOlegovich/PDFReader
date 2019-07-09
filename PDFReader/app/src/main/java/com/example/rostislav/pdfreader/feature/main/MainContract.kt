@@ -6,13 +6,9 @@ import com.example.rostislav.pdfreader.feature.MVP.MVPView
 import java.io.File
 
 interface View : MVPView {
-    fun showView(file: File) {
-    }
+    fun showView(file: File)
 }
 
 interface Presenter : MVPPresenter<View> {
-    fun downloadView(string: String, context: Context) {
-    }
-
-    fun getViewFromDatabase(context: Context)
+    fun downloadView(string: String, context: Context)
 }

@@ -1,31 +1,27 @@
 package com.example.rostislav.pdfreader.feature.main
 
 import android.content.Context
+import android.os.Looper
 import com.example.rostislav.pdfreader.core.App
-import com.example.rostislav.pdfreader.model.database.Database
 import com.example.rostislav.pdfreader.model.network.Network
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import java.io.File
+import java.util.concurrent.ExecutorService
 
 class MainPresenter(override var view: View? = null) : Presenter {
     private lateinit var network: Network
-    private lateinit var database: Database
+    private lateinit var executor: ExecutorService
+
+    private val handler = android.os.Handler(Looper.getMainLooper())
 
     override fun downloadView(string: String, context: Context) {
-        super.downloadView(string, context)
         network = (context.applicationContext as App).network
+        executor = (context.applicationContext as App).executor
 
-        doAsync {
+        val runnable = Runnable { view?.showView(File(context.filesDir, "file")) }
+
+        executor.execute {
             network.connectToNetwork(string, context)
-            uiThread {
-                Thread.sleep(3000)
-                getViewFromDatabase(context)
-            }
+            handler.postDelayed(runnable, 3000)
         }
-    }
-
-    override fun getViewFromDatabase(context: Context) {
-        database = (context.applicationContext as App).database
-        view?.showView(database.getData())
     }
 }
