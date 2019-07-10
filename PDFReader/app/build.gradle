@@ -11,7 +11,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "url", "\"https://www.telc.net/fileadmin/user_upload/telc_english_b2_uebungstest_1.pdf\""
+        buildConfigField "String", "URL", "\"https://www.telc.net/fileadmin/user_upload/telc_english_b2_uebungstest_1.pdf\""
+        buildConfigField "String", "FILE_NAME", "\"file\""
     }
     buildTypes {
         release {

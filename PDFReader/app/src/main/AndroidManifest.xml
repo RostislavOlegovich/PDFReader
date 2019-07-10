@@ -15,14 +15,11 @@
         android:theme="@style/BaseTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".core.base.BaseActivity" />
-
         <activity android:name=".feature.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 </manifest>

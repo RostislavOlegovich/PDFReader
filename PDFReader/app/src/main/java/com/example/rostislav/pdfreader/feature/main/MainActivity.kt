@@ -7,13 +7,19 @@ import com.example.rostislav.pdfreader.core.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
-class MainActivity : BaseActivity(), View {
+class MainActivity : BaseActivity<View, Presenter>(), View {
+
+    override fun setLayout() = R.layout.activity_main
+
+    override fun createView() = this
+
+    override fun createPresenter() = MainPresenter(applicationContext)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.attach(this)
-        presenter.downloadView(BuildConfig.url, this)
+        presenter.downloadView(BuildConfig.URL, this)
     }
 
     override fun onDestroy() {
@@ -23,5 +29,8 @@ class MainActivity : BaseActivity(), View {
 
     override fun showView(file: File) {
         pdfView.fromFile(file).load()
+    }
+
+    override fun error() {
     }
 }

@@ -3,13 +3,9 @@ package com.example.rostislav.pdfreader.feature.mvp
 interface MVPPresenter<V : MVPView> {
     var view: V?
 
-    fun attach(view: V) {
-        this.view = view
-    }
+    fun attach(view: V)
 
-    fun dettach() {
-        this.view = null
-    }
+    fun dettach()
 
-    fun isAttach() = this.view != null
+    fun isAttach(): Boolean
 }
