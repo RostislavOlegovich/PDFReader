@@ -7,8 +7,9 @@ class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter 
 
     override fun downloadView(string: String, context: Context) {
         doAsync(
-            { network.downloadFromNetwork(string, context) },
-            { view?.showView(network.getFile(context)) }
+                { network.downloadFromNetwork(string, context) },
+                { view?.showView(network.getFile(context)) },
+                this::onError
         )
     }
 }

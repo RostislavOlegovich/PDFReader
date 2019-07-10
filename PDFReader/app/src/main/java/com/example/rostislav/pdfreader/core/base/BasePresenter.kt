@@ -24,13 +24,23 @@ abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
 
     override fun isAttach() = this.view != null
 
+    fun onError(exception: Throwable) {
+        view?.error(exception)
+    }
+
     inline fun doAsync(
-        crossinline blockA: () -> Unit,
-        crossinline blockB: () -> Unit
+            crossinline blockA: () -> Unit,
+            crossinline blockB: () -> Unit,
+            crossinline onError: (Throwable) -> Unit
     ) {
         executor.execute {
-            blockA.invoke()
-            handler.post { blockB.invoke() }
+            try {
+                blockA.invoke()
+                handler.post { blockB.invoke() }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                handler.post { onError.invoke(e) }
+            }
         }
     }
 }

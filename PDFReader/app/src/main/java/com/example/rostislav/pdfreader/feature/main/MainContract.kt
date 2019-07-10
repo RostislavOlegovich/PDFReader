@@ -7,7 +7,6 @@ import java.io.File
 
 interface View : MVPView {
     fun showView(file: File)
-    fun error()
 }
 
 interface Presenter : MVPPresenter<View> {

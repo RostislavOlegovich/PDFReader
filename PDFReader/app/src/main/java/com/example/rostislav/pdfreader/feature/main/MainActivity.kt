@@ -31,6 +31,9 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         pdfView.fromFile(file).load()
     }
 
-    override fun error() {
+    override fun error(e: Any) {
+        pdfView.visibility = android.view.View.GONE
+        tvError.visibility = android.view.View.VISIBLE
+        tvError.text = e.toString()
     }
 }

@@ -1,3 +1,5 @@
 package com.example.rostislav.pdfreader.feature.mvp
 
-interface MVPView
+interface MVPView {
+    fun error(e: Any)
+}
