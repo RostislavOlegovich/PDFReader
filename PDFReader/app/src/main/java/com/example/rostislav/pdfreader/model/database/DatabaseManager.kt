@@ -11,7 +11,8 @@ class DatabaseManager(context: Context) : Database {
     override fun insert() {
     }
 
-    override fun update() {
+    override fun update(fileData: FileData) {
+        appDatabase.fileDatabaseDao.update(fileData)
     }
 
     override fun get(key: String): FileData {

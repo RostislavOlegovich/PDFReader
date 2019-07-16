@@ -2,43 +2,41 @@ package com.example.rostislav.pdfreader.feature.main
 
 import android.content.Context
 import com.example.rostislav.pdfreader.core.base.BasePresenter
-import com.example.rostislav.pdfreader.utils.extention.getNameFromString
-import okhttp3.Response
+import com.example.rostislav.pdfreader.model.database.room.FileData
 import java.io.File
 
-class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter {
+class MainPresenter(val context: Context) : BasePresenter<View>(context), Presenter {
 
-    override fun downloadView(url: String, context: Context, filename: String) {
-        doAsync(
-                { network.downloadFromNetwork(url, context) },
-                { writeToStorage(it, context, filename) },
-                this::onError
-        )
-        view?.openActivity(filename)
+    override fun getFromDatabase(fileData: FileData) {
+        if (fileManager.isFileExist(fileData.localPath)) {
+            view?.openActivity(fileData.localPath)
+        } else {
+            downloadView(fileData.url, fileData.fileName)
+        }
     }
 
-    override fun getFromDatabase(key: String, context: Context) {
-        val filename = key.getNameFromString()
-        val storage = readFromStorage(filename, context).exists()
-        if (storage) {
-            view?.openActivity(filename)
-        } else {
-            downloadView(key, context, filename)
-        }
+    override fun downloadView(url: String, filename: String) {
+        doAsync(
+                {
+                    val response = network.downloadFromNetwork(url, context)
+                    fileManager.writeFileToInternalStorage(response, filename)
+                },
+                { writeToDatabase(it, url) },
+                this::onError
+        )
     }
 
     override fun getAll() {
-        executor.execute {
-            val list = database.getAll()
-            handler.post { view?.showView(list) }
-        }
+        doAsync({ database.getAll() }, { view?.showView(it) }, this::onError)
     }
 
-    override fun readFromStorage(filename: String, context: Context): File {
-        return fileManager.readFileFromInternalStorage(filename, context)
+    override fun readFromStorage(filePath: String): File {
+        return fileManager.readFileFromInternalStorage(filePath)
     }
 
-    override fun writeToStorage(response: Response, context: Context, filename: String) {
-        fileManager.writeFileToInternalStorage(context, response, filename)
+    override fun writeToDatabase(file: File, url: String) {
+        doAsync({ database.update(FileData(url, file.absolutePath, file.name)) },
+                { view?.openActivity(file.absolutePath) },
+                this::onError)
     }
 }

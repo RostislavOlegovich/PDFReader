@@ -24,6 +24,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".feature.second.BookActivity" />
+        <activity android:name=".feature.book.BookActivity" />
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.second
+package com.example.rostislav.pdfreader.feature.book
 
 import android.os.Bundle
 import com.example.rostislav.pdfreader.R
@@ -16,8 +16,8 @@ class BookActivity : BaseActivity<BookView, BookPresenterImpl>(), BookView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val file = (intent.getStringExtra("file"))!!
-        presenter.readFromStorage(file, this)
+        val file = (intent.getStringExtra("filePath"))!!
+        presenter.readFromStorage(file)
     }
 
     override fun showView(data: File) {

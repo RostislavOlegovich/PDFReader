@@ -5,7 +5,7 @@ import com.example.rostislav.pdfreader.model.database.room.FileData
 interface Database {
     fun insert()
 
-    fun update()
+    fun update(fileData: FileData)
 
     fun get(key: String): FileData
 

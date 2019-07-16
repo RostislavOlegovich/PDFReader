@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.second
+package com.example.rostislav.pdfreader.feature.book
 
 import android.content.Context
 import com.example.rostislav.pdfreader.feature.mvp.MVPPresenter
@@ -10,5 +10,5 @@ interface BookView : MVPView {
 }
 
 interface BookPresenter : MVPPresenter<BookView> {
-    fun readFromStorage(filename: String, context: Context)
+    fun readFromStorage(filename: String)
 }

@@ -1,10 +1,8 @@
 package com.example.rostislav.pdfreader.feature.main
 
-import android.content.Context
 import com.example.rostislav.pdfreader.feature.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.feature.mvp.MVPView
 import com.example.rostislav.pdfreader.model.database.room.FileData
-import okhttp3.Response
 import java.io.File
 
 interface View : MVPView {
@@ -14,13 +12,13 @@ interface View : MVPView {
 }
 
 interface Presenter : MVPPresenter<View> {
-    fun downloadView(url: String, context: Context, filename: String)
+    fun downloadView(url: String, filename: String)
 
-    fun getFromDatabase(key: String, context: Context)
+    fun getFromDatabase(fileData: FileData)
 
     fun getAll()
 
-    fun readFromStorage(filename: String, context: Context): File
+    fun readFromStorage(filePath: String): File
 
-    fun writeToStorage(response: Response, context: Context, filename: String)
+    fun writeToDatabase(file: File, url: String)
 }

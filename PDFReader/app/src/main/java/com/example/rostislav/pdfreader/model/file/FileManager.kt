@@ -1,11 +1,12 @@
 package com.example.rostislav.pdfreader.model.file
 
-import android.content.Context
 import okhttp3.Response
 import java.io.File
 
 interface FileManager {
-    fun writeFileToInternalStorage(context: Context, response: Response, filename: String)
+    fun writeFileToInternalStorage(response: Response, filename: String) : File
 
-    fun readFileFromInternalStorage(filename: String, context: Context): File
+    fun readFileFromInternalStorage(localPath: String): File
+
+    fun isFileExist(localPath: String): Boolean
 }

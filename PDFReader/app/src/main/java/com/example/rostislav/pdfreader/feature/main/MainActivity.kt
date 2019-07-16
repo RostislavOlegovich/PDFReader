@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.base.BaseActivity
-import com.example.rostislav.pdfreader.feature.second.BookActivity
+import com.example.rostislav.pdfreader.feature.book.BookActivity
 import com.example.rostislav.pdfreader.model.database.room.FileData
 import com.example.rostislav.pdfreader.utils.DatabaseCreator
 import com.example.rostislav.pdfreader.utils.extention.visible
@@ -26,7 +26,7 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         rvBooks.layoutManager = LinearLayoutManager(this)
         presenter.getAll()
         adapter.itemClickListener = { position, _ ->
-            presenter.getFromDatabase(adapter.list[position].url, this)
+            presenter.getFromDatabase(adapter.list[position])
         }
     }
 
@@ -43,7 +43,8 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
 
     override fun openActivity(data: String) {
         val intent = Intent(this, BookActivity::class.java)
-        intent.putExtra("file", data)
+        intent.putExtra("filePath", data)
         startActivity(intent)
+        presenter.getAll()
     }
 }

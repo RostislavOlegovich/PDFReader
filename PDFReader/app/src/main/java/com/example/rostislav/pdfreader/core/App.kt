@@ -23,6 +23,6 @@ class App : Application() {
         super.onCreate()
         network = NetworkManager()
         database = DatabaseManager(applicationContext)
-        fileManager = FileManagerImpl()
+        fileManager = FileManagerImpl(applicationContext)
     }
 }
