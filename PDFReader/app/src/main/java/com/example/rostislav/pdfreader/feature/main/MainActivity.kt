@@ -1,13 +1,19 @@
 package com.example.rostislav.pdfreader.feature.main
 
+import android.content.Intent
 import android.os.Bundle
-import com.example.rostislav.pdfreader.BuildConfig
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.base.BaseActivity
+import com.example.rostislav.pdfreader.feature.second.BookActivity
+import com.example.rostislav.pdfreader.model.database.room.FileData
+import com.example.rostislav.pdfreader.utils.DatabaseCreator
+import com.example.rostislav.pdfreader.utils.extention.visible
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
 
 class MainActivity : BaseActivity<View, Presenter>(), View {
+
+    private val adapter = ListOfBooksAdapter(DatabaseCreator.fileList)
 
     override fun setLayout() = R.layout.activity_main
 
@@ -17,23 +23,27 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        presenter.attach(this)
-        presenter.downloadView(BuildConfig.URL, this)
+        rvBooks.layoutManager = LinearLayoutManager(this)
+        presenter.getAll()
+        adapter.itemClickListener = { position, _ ->
+            presenter.getFromDatabase(adapter.list[position].url, this)
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.dettach()
+    override fun showView(data: MutableList<FileData>) {
+        adapter.replace(data)
+        rvBooks.adapter = adapter
     }
 
-    override fun showView(file: File) {
-        pdfView.fromFile(file).load()
+    override fun error(exception: Throwable) {
+        rvBooks.visible(false)
+        tvError.visible(true)
+        tvError.text = exception.toString()
     }
 
-    override fun error(e: Any) {
-        pdfView.visibility = android.view.View.GONE
-        tvError.visibility = android.view.View.VISIBLE
-        tvError.text = e.toString()
+    override fun openActivity(data: String) {
+        val intent = Intent(this, BookActivity::class.java)
+        intent.putExtra("file", data)
+        startActivity(intent)
     }
 }

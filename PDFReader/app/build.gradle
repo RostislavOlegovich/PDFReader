@@ -1,18 +1,16 @@
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.rostislav.pdfreader"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
-        buildConfigField "String", "URL", "\"https://www.telc.net/fileadmin/user_upload/telc_english_b2_uebungstest_1.pdf\""
-        buildConfigField "String", "FILE_NAME", "\"file\""
     }
     buildTypes {
         release {
@@ -33,4 +31,13 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.0.0"
     //PDF Viewer
     implementation "com.github.barteksc:android-pdf-viewer:3.1.0-beta.1"
+    //Room
+    def room_version = "2.1.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    //Recycler
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    //Anco
+    implementation 'org.jetbrains.anko:anko-common:0.9'
+
 }
