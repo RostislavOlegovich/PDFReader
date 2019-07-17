@@ -1,7 +1,7 @@
 package com.example.rostislav.pdfreader.utils.system
 
-object ThreadChecker {
-    fun getNumberOfCores(): Int {
-        return Runtime.getRuntime().availableProcessors() * 2
-    }
+fun getNumberOfCores(): Int {
+    val minThreadsNum = 3
+    val deviceThreads = Runtime.getRuntime().availableProcessors()
+    return if (minThreadsNum > deviceThreads) minThreadsNum else deviceThreads
 }

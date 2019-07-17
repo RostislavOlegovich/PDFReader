@@ -8,8 +8,8 @@ import com.example.rostislav.pdfreader.model.database.room.FileData
 import com.example.rostislav.pdfreader.utils.extention.inflate
 import kotlinx.android.synthetic.main.item_book.view.*
 
-class ListOfBooksAdapter(list: MutableList<FileData>) :
-    BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(list) {
+class MainAdapter(items: MutableList<FileData>) :
+    BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<FileData> {
         val view = parent.inflate(R.layout.item_book)
@@ -18,7 +18,8 @@ class ListOfBooksAdapter(list: MutableList<FileData>) :
 
     class BookViewHolder(item: View) : BaseAdapter.BaseViewHolder<FileData>(item) {
         override fun bind(type: FileData) {
-            itemView.tvItemBook.text = type.fileName
+            itemView.tvNameBook.text = type.fileName
+            itemView.tvNameBook
         }
     }
 }

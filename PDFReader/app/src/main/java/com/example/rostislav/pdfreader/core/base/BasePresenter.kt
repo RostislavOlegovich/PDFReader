@@ -3,8 +3,8 @@ package com.example.rostislav.pdfreader.core.base
 import android.content.Context
 import android.os.Looper
 import com.example.rostislav.pdfreader.core.App
-import com.example.rostislav.pdfreader.feature.mvp.MVPPresenter
-import com.example.rostislav.pdfreader.feature.mvp.MVPView
+import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
+import com.example.rostislav.pdfreader.core.mvp.MVPView
 import com.example.rostislav.pdfreader.model.database.Database
 import com.example.rostislav.pdfreader.model.file.FileManager
 import com.example.rostislav.pdfreader.model.network.Network
@@ -33,14 +33,14 @@ abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
     }
 
     inline fun <T> doAsync(
-        crossinline blockA: () -> T,
-        crossinline blockB: (T) -> Unit,
+        crossinline requestData: () -> T,
+        crossinline useData: (T) -> Unit,
         crossinline onError: (Throwable) -> Unit
     ) {
         executor.execute {
             try {
-                val result = blockA.invoke()
-                handler.post { blockB.invoke(result) }
+                val result = requestData.invoke()
+                handler.post { useData.invoke(result) }
             } catch (exception: Exception) {
                 exception.printStackTrace()
                 handler.post { onError.invoke(exception) }

@@ -1,7 +1,7 @@
 package com.example.rostislav.pdfreader.feature.book
 
-import com.example.rostislav.pdfreader.feature.mvp.MVPPresenter
-import com.example.rostislav.pdfreader.feature.mvp.MVPView
+import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
+import com.example.rostislav.pdfreader.core.mvp.MVPView
 import java.io.File
 
 interface BookView : MVPView {

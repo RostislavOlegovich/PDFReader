@@ -4,26 +4,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>>(val list: MutableList<T>) :
+abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>>(val items: List<T>) :
     RecyclerView.Adapter<VH>() {
 
     var itemClickListener: ((Int, View) -> Unit)? = null
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH
 
-    override fun getItemCount() = list.size
+    override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.itemView.setOnClickListener {
-            if (holder.adapterPosition != RecyclerView.NO_POSITION && holder.adapterPosition < itemCount)
+            if (holder.adapterPosition != RecyclerView.NO_POSITION && holder.adapterPosition < itemCount) {
                 itemClickListener?.invoke(holder.adapterPosition, it)
+            }
         }
-        holder.bind(list[position])
+        holder.bind(items[position])
     }
 
-    open fun updateRecyclerView(items: MutableList<T>) {
-        list.clear()
-        list.addAll(items)
+    open fun replace(items: MutableList<T>) {
+        items.clear()
+        items.addAll(items)
         notifyDataSetChanged()
     }
 

@@ -8,7 +8,7 @@ import java.io.File
 
 class BookActivity : BaseActivity<BookView, BookPresenterImpl>(), BookView {
 
-    override fun setLayout() = R.layout.activity_book
+    override fun assignLayout() = R.layout.activity_book
 
     override fun createPresenter() = BookPresenterImpl(applicationContext)
 
@@ -20,8 +20,5 @@ class BookActivity : BaseActivity<BookView, BookPresenterImpl>(), BookView {
 
     override fun showView(data: File) {
         pdfView.fromFile(data).load()
-    }
-
-    override fun error(exception: Throwable) {
     }
 }

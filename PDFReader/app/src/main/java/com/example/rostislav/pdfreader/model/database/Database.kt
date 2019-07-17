@@ -7,7 +7,7 @@ interface Database {
 
     fun update(fileData: FileData)
 
-    fun get(key: String): FileData
+    fun getData(key: String): FileData
 
-    fun getAll(): MutableList<FileData>
+    fun getAllData(): List<FileData>
 }

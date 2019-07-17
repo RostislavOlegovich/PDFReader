@@ -1,9 +1,6 @@
 package com.example.rostislav.pdfreader.utils
 
 object NamesOfFiles {
-    const val DATABASE_NAME = "file_database"
-    const val COLUMN_LOCAL_PATH_NAME = "local_path"
-    const val COLUMN_FILE_NAME = "file_name"
     const val EMPTY_STRING = ""
     const val FILE_NAME_1 = "https://www.telc.net/fileadmin/user_upload/telc_english_b2_uebungstest_1.pdf"
     const val FILE_NAME_2 = "https://upload.wikimedia.org/wikipedia/commons/b/b3/C_Sharp_Programming.pdf"

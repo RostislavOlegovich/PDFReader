@@ -10,15 +10,15 @@ interface FileDatabaseDao {
     @Insert
     fun insert(fileData: FileData)
 
+    @Insert
+    fun insertAllData(listOfFileData: List<FileData>)
+
     @Update
     fun update(fileData: FileData)
 
-    @Query("SELECT * from file_database WHERE url = :key")
-    fun get(key: String): FileData
+    @Query("SELECT * from file_database WHERE url = :url")
+    fun query(url: String): FileData
 
     @Query("SELECT * from file_database")
-    fun getAll(): MutableList<FileData>
-
-    @Insert
-    fun insertAll(listOfFileData: List<FileData>)
+    fun queryAllData(): List<FileData>
 }

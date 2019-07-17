@@ -15,11 +15,11 @@ class DatabaseManager(context: Context) : Database {
         appDatabase.fileDatabaseDao.update(fileData)
     }
 
-    override fun get(key: String): FileData {
-        return appDatabase.fileDatabaseDao.get(key)
+    override fun getData(key: String): FileData {
+        return appDatabase.fileDatabaseDao.query(key)
     }
 
-    override fun getAll(): MutableList<FileData> {
-        return appDatabase.fileDatabaseDao.getAll()
+    override fun getAllData(): List<FileData> {
+        return appDatabase.fileDatabaseDao.queryAllData()
     }
 }

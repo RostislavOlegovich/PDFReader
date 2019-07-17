@@ -7,34 +7,30 @@ import java.io.File
 
 class MainPresenter(val context: Context) : BasePresenter<View>(context), Presenter {
 
-    override fun getFromDatabase(fileData: FileData) {
+    override fun loadFile(fileData: FileData) {
         if (fileManager.isFileExist(fileData.localPath)) {
             view?.openActivity(fileData.localPath)
         } else {
-            downloadView(fileData.url, fileData.fileName)
+            download(fileData.url, fileData.fileName)
         }
     }
 
-    override fun downloadView(url: String, filename: String) {
+    override fun loadAllFiles() {
+        doAsync({ database.getAllData() }, { view?.showView(it) }, this::onError)
+    }
+
+    private fun download(url: String, filename: String) {
         doAsync(
             {
-                val response = network.downloadFromNetwork(url, context)
-                fileManager.writeFileToInternalStorage(response, filename)
+                val response = network.downloadFromNetwork(url)
+                fileManager.writeFile(response, filename)
             },
             { writeToDatabase(it, url) },
             this::onError
         )
     }
 
-    override fun getAll() {
-        doAsync({ database.getAll() }, { view?.showView(it) }, this::onError)
-    }
-
-    override fun readFromStorage(filePath: String): File {
-        return fileManager.readFileFromInternalStorage(filePath)
-    }
-
-    override fun writeToDatabase(file: File, url: String) {
+    private fun writeToDatabase(file: File, url: String) {
         doAsync(
             { database.update(FileData(url, file.absolutePath, file.name)) },
             { view?.openActivity(file.absolutePath) },

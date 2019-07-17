@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.rostislav.pdfreader.model.database.room.AppDatabase
-import java.util.concurrent.Executors
+import org.jetbrains.anko.doAsync
 
 object DatabaseInitializer {
     @Volatile
@@ -19,7 +19,7 @@ object DatabaseInitializer {
                 instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    NamesOfFiles.DATABASE_NAME
+                    "file_database"
                 )
                     .addCallback(callback)
                     .build()
@@ -32,9 +32,8 @@ object DatabaseInitializer {
     private val callback = object : RoomDatabase.Callback() {
         override fun onCreate(database: SupportSQLiteDatabase) {
             super.onCreate(database)
-            val fileList = DatabaseCreator.fileList
-            Executors.newSingleThreadExecutor().execute {
-                INSTANCE?.fileDatabaseDao?.insertAll(fileList)
+            doAsync {
+                INSTANCE?.fileDatabaseDao?.insertAllData(DatabaseCreator.fileList)
             }
         }
     }

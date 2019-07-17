@@ -5,14 +5,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.rostislav.pdfreader.utils.NamesOfFiles
 
-@Entity(tableName = NamesOfFiles.DATABASE_NAME)
+@Entity(tableName = "file_database")
 data class FileData(
     @PrimaryKey
     var url: String = NamesOfFiles.EMPTY_STRING,
-
-    @ColumnInfo(name = NamesOfFiles.COLUMN_LOCAL_PATH_NAME)
+    @ColumnInfo(name = "local_path")
     val localPath: String = NamesOfFiles.EMPTY_STRING,
-
-    @ColumnInfo(name = NamesOfFiles.COLUMN_FILE_NAME)
+    @ColumnInfo(name = "file_name")
     var fileName: String = NamesOfFiles.EMPTY_STRING
 )

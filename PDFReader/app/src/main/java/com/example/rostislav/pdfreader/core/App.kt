@@ -7,7 +7,7 @@ import com.example.rostislav.pdfreader.model.file.FileManager
 import com.example.rostislav.pdfreader.model.file.FileManagerImpl
 import com.example.rostislav.pdfreader.model.network.Network
 import com.example.rostislav.pdfreader.model.network.NetworkManager
-import com.example.rostislav.pdfreader.utils.system.ThreadChecker
+import com.example.rostislav.pdfreader.utils.system.getNumberOfCores
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -17,7 +17,7 @@ class App : Application() {
     lateinit var fileManager: FileManager
 
     val executor: ExecutorService =
-        Executors.newFixedThreadPool(ThreadChecker.getNumberOfCores())
+        Executors.newFixedThreadPool(getNumberOfCores())
 
     override fun onCreate() {
         super.onCreate()
