@@ -17,8 +17,6 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
 
     override fun setLayout() = R.layout.activity_main
 
-    override fun createView() = this
-
     override fun createPresenter() = MainPresenter(applicationContext)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +29,7 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
     }
 
     override fun showView(data: MutableList<FileData>) {
-        adapter.replace(data)
+        adapter.updateRecyclerView(data)
         rvBooks.adapter = adapter
     }
 

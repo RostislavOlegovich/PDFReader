@@ -21,7 +21,7 @@ abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>>(val list: Muta
         holder.bind(list[position])
     }
 
-    open fun replace(items: MutableList<T>) {
+    open fun updateRecyclerView(items: MutableList<T>) {
         list.clear()
         list.addAll(items)
         notifyDataSetChanged()

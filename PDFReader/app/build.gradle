@@ -37,7 +37,4 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     //Recycler
     implementation "androidx.recyclerview:recyclerview:1.0.0"
-    //Anco
-    implementation 'org.jetbrains.anko:anko-common:0.9'
-
 }

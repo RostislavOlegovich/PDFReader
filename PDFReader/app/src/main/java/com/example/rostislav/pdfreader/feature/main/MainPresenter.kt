@@ -17,12 +17,12 @@ class MainPresenter(val context: Context) : BasePresenter<View>(context), Presen
 
     override fun downloadView(url: String, filename: String) {
         doAsync(
-                {
-                    val response = network.downloadFromNetwork(url, context)
-                    fileManager.writeFileToInternalStorage(response, filename)
-                },
-                { writeToDatabase(it, url) },
-                this::onError
+            {
+                val response = network.downloadFromNetwork(url, context)
+                fileManager.writeFileToInternalStorage(response, filename)
+            },
+            { writeToDatabase(it, url) },
+            this::onError
         )
     }
 
@@ -35,8 +35,10 @@ class MainPresenter(val context: Context) : BasePresenter<View>(context), Presen
     }
 
     override fun writeToDatabase(file: File, url: String) {
-        doAsync({ database.update(FileData(url, file.absolutePath, file.name)) },
-                { view?.openActivity(file.absolutePath) },
-                this::onError)
+        doAsync(
+            { database.update(FileData(url, file.absolutePath, file.name)) },
+            { view?.openActivity(file.absolutePath) },
+            this::onError
+        )
     }
 }

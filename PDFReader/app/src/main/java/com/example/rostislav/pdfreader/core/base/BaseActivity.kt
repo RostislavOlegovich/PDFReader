@@ -13,15 +13,14 @@ abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivit
     @LayoutRes
     abstract fun setLayout(): Int
 
-    abstract fun createView(): V
-
     abstract fun createPresenter(): P
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(setLayout())
         presenter = createPresenter()
-        view = createView()
+        @Suppress("UNCHECKED_CAST")
+        view = this as V
         presenter.attach(view)
     }
 

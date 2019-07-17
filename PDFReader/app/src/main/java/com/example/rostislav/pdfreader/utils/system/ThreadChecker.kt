@@ -1,7 +1,7 @@
 package com.example.rostislav.pdfreader.utils.system
 
-object ThreadCheker {
+object ThreadChecker {
     fun getNumberOfCores(): Int {
-        return Runtime.getRuntime().availableProcessors()
+        return Runtime.getRuntime().availableProcessors() * 2
     }
 }
