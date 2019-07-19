@@ -1,7 +1,8 @@
 package com.example.rostislav.pdfreader.model.database
 
 import android.content.Context
-import com.example.rostislav.pdfreader.model.database.room.FileData
+import com.example.rostislav.pdfreader.model.database.mapper.toDatabaseFileData
+import com.example.rostislav.pdfreader.model.database.mapper.toFileData
 import com.example.rostislav.pdfreader.utils.DatabaseInitializer
 
 class DatabaseManager(context: Context) : Database {
@@ -11,15 +12,15 @@ class DatabaseManager(context: Context) : Database {
     override fun insert() {
     }
 
-    override fun update(fileData: FileData) {
-        appDatabase.fileDatabaseDao.update(fileData)
+    override fun update(fileData: DatabaseFileData) {
+        appDatabase.fileDatabaseDao.update(fileData.toFileData())
     }
 
-    override fun getData(key: String): FileData {
-        return appDatabase.fileDatabaseDao.query(key)
+    override fun getData(key: String): DatabaseFileData {
+        return appDatabase.fileDatabaseDao.query(key).toDatabaseFileData()
     }
 
-    override fun getAllData(): List<FileData> {
-        return appDatabase.fileDatabaseDao.queryAllData()
+    override fun getAllData(): List<DatabaseFileData> {
+        return appDatabase.fileDatabaseDao.queryAllData().map { it.toDatabaseFileData() }
     }
 }

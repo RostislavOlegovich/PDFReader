@@ -2,12 +2,12 @@ package com.example.rostislav.pdfreader.feature.main
 
 import android.content.Context
 import com.example.rostislav.pdfreader.core.base.BasePresenter
-import com.example.rostislav.pdfreader.model.database.room.FileData
+import com.example.rostislav.pdfreader.model.database.DatabaseFileData
 import java.io.File
 
 class MainPresenter(val context: Context) : BasePresenter<View>(context), Presenter {
 
-    override fun loadFile(fileData: FileData) {
+    override fun loadFile(fileData: DatabaseFileData) {
         if (fileManager.isFileExist(fileData.localPath)) {
             view?.openActivity(fileData.localPath)
         } else {
@@ -38,7 +38,7 @@ class MainPresenter(val context: Context) : BasePresenter<View>(context), Presen
         doAsync(
             {
                 val thumbnail = fileManager.generateImageFromPdf(file)
-                database.update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
+                database.update(DatabaseFileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
             },
             {
                 view?.openActivity(file.absolutePath)

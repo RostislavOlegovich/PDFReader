@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.base.BaseActivity
 import com.example.rostislav.pdfreader.feature.book.BookActivity
-import com.example.rostislav.pdfreader.model.database.room.FileData
+import com.example.rostislav.pdfreader.model.database.DatabaseFileData
 import com.example.rostislav.pdfreader.utils.extention.visible
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,8 +28,8 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         }
     }
 
-    override fun showView(data: List<FileData>) {
-        adapter.replace(data as MutableList<FileData>)
+    override fun showView(data: List<DatabaseFileData>) {
+        adapter.replace(data as MutableList<DatabaseFileData>)
     }
 
     override fun error(exception: Throwable) {
