@@ -7,6 +7,9 @@ buildscript {
     ext.pdfreader_version = "3.1.0-beta.1"
     ext.anco_version = "0.10.8"
     ext.gravitysnaphelper_version = "2.0"
+    ext.glide_version = "4.9.0"
+    ext.recycler_version = "1.0.0"
+    ext.card_version = "1.0.0"
     repositories {
         google()
         jcenter()

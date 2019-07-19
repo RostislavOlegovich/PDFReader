@@ -16,9 +16,9 @@ interface FileDatabaseDao {
     @Update
     fun update(fileData: FileData)
 
-    @Query("SELECT * from file_database WHERE url = :url")
+    @Query("SELECT * FROM file_database WHERE url = :url")
     fun query(url: String): FileData
 
-    @Query("SELECT * from file_database")
+    @Query("SELECT * FROM file_database ")
     fun queryAllData(): List<FileData>
 }

@@ -8,13 +8,12 @@ import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.base.BaseActivity
 import com.example.rostislav.pdfreader.feature.book.BookActivity
 import com.example.rostislav.pdfreader.model.database.room.FileData
-import com.example.rostislav.pdfreader.utils.DatabaseCreator
 import com.example.rostislav.pdfreader.utils.extention.visible
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<View, Presenter>(), View {
 
-    private val adapter = MainAdapter(DatabaseCreator.fileList)
+    private val adapter = MainAdapter(this)
 
     override fun assignLayout() = R.layout.activity_main
 
@@ -22,8 +21,8 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initRecycler()
         presenter.loadAllFiles()
+        initRecycler()
         adapter.itemClickListener = { position, _ ->
             presenter.loadFile(adapter.items[position])
         }
@@ -31,7 +30,6 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
 
     override fun showView(data: List<FileData>) {
         adapter.replace(data as MutableList<FileData>)
-        rvBooks.adapter = adapter
     }
 
     override fun error(exception: Throwable) {
@@ -50,5 +48,6 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
     private fun initRecycler() {
         LinearSnapHelper().attachToRecyclerView(rvBooks)
         rvBooks.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvBooks.adapter = adapter
     }
 }

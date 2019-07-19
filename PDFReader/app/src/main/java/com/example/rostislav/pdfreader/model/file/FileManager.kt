@@ -8,4 +8,6 @@ interface FileManager {
     fun readFile(localPath: String): File
 
     fun isFileExist(localPath: String): Boolean
+
+    fun generateImageFromPdf(file: File): File
 }

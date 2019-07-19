@@ -16,7 +16,9 @@ class MainPresenter(val context: Context) : BasePresenter<View>(context), Presen
     }
 
     override fun loadAllFiles() {
-        doAsync({ database.getAllData() }, { view?.showView(it) }, this::onError)
+        doAsync(
+            { database.getAllData() }, { view?.showView(it) }, this::onError
+        )
     }
 
     private fun download(url: String, filename: String) {
@@ -25,15 +27,22 @@ class MainPresenter(val context: Context) : BasePresenter<View>(context), Presen
                 val response = network.downloadFromNetwork(url)
                 fileManager.writeFile(response, filename)
             },
-            { writeToDatabase(it, url) },
+            {
+                writeToDatabase(it, url)
+            },
             this::onError
         )
     }
 
     private fun writeToDatabase(file: File, url: String) {
         doAsync(
-            { database.update(FileData(url, file.absolutePath, file.name)) },
-            { view?.openActivity(file.absolutePath) },
+            {
+                val thumbnail = fileManager.generateImageFromPdf(file)
+                database.update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
+            },
+            {
+                view?.openActivity(file.absolutePath)
+            },
             this::onError
         )
     }

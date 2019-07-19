@@ -29,6 +29,6 @@ abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivit
         presenter.dettach()
     }
 
-    override fun error(exception: Throwable){
+    override fun error(exception: Throwable) {
     }
 }

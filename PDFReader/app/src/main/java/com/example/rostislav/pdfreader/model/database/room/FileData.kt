@@ -8,9 +8,11 @@ import com.example.rostislav.pdfreader.utils.NamesOfFiles
 @Entity(tableName = "file_database")
 data class FileData(
     @PrimaryKey
-    var url: String = NamesOfFiles.EMPTY_STRING,
+    val url: String = NamesOfFiles.EMPTY_STRING,
     @ColumnInfo(name = "local_path")
     val localPath: String = NamesOfFiles.EMPTY_STRING,
     @ColumnInfo(name = "file_name")
-    var fileName: String = NamesOfFiles.EMPTY_STRING
+    val fileName: String = NamesOfFiles.EMPTY_STRING,
+    @ColumnInfo(name = "file_thumbnail")
+    val thumbnail: String = NamesOfFiles.EMPTY_STRING
 )
