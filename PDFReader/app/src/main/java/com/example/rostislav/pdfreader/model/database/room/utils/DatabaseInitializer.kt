@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.utils
+package com.example.rostislav.pdfreader.model.database.room.utils
 
 import android.content.Context
 import androidx.room.Room
@@ -8,12 +8,11 @@ import com.example.rostislav.pdfreader.model.database.room.AppDatabase
 import org.jetbrains.anko.doAsync
 
 object DatabaseInitializer {
-    @Volatile
-    private var INSTANCE: AppDatabase? = null
+    private var appDatabase: AppDatabase? = null
 
     fun getInstance(context: Context): AppDatabase {
         synchronized(this) {
-            var instance = INSTANCE
+            var instance = appDatabase
 
             if (instance == null) {
                 instance = Room.databaseBuilder(
@@ -23,7 +22,7 @@ object DatabaseInitializer {
                 )
                     .addCallback(callback)
                     .build()
-                INSTANCE = instance
+                appDatabase = instance
             }
             return instance
         }
@@ -33,7 +32,9 @@ object DatabaseInitializer {
         override fun onCreate(database: SupportSQLiteDatabase) {
             super.onCreate(database)
             doAsync {
-                INSTANCE?.fileDatabaseDao?.insertAllData(DatabaseCreator.fileList)
+                appDatabase!!.fileDatabaseDao.insertAllData(
+                    DatabaseCreator.fileList
+                )
             }
         }
     }

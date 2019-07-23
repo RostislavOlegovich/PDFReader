@@ -1,11 +1,10 @@
 package com.example.rostislav.pdfreader.core.base
 
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>>(val context: Context) :
+abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>> :
     RecyclerView.Adapter<VH>() {
 
     val items: MutableList<T> = mutableListOf()
@@ -22,6 +21,10 @@ abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>>(val context: C
             }
         }
         holder.bind(items[position])
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     open fun replace(itemsList: MutableList<T>) {

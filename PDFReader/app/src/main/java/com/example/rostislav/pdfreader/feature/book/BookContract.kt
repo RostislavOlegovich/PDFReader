@@ -5,7 +5,7 @@ import com.example.rostislav.pdfreader.core.mvp.MVPView
 import java.io.File
 
 interface BookView : MVPView {
-    fun showView(data: File)
+    fun show(data: File)
 }
 
 interface BookPresenter : MVPPresenter<BookView> {

@@ -7,6 +7,6 @@ class BookPresenterImpl(val context: Context) : BasePresenter<BookView>(context)
 
     override fun readFromStorage(localPath: String) {
         val file = fileManager.readFile(localPath)
-        view?.showView(file)
+        view?.show(file)
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
-import com.example.rostislav.pdfreader.utils.extention.changeName
+import com.example.rostislav.pdfreader.utils.changeName
 import java.io.File
 import java.io.FileOutputStream
 
@@ -22,7 +22,7 @@ class FileManagerImpl(val context: Context) : FileManager {
     override fun isFileExist(localPath: String) = File(localPath).exists()
 
     override fun generateImageFromPdf(file: File): File {
-        val fileThumbnail = File(context.filesDir, file.name.changeName())
+        val fileThumbnail = File(context.filesDir, changeName(file.name))
         val pdfRenderer = PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY))
         val pdfPage = pdfRenderer.openPage(DEFAULT_PAGE)
         val bitmap = Bitmap.createBitmap(pdfPage.width, pdfPage.height, Bitmap.Config.ARGB_8888)

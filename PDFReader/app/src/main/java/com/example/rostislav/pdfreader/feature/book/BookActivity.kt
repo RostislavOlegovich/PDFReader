@@ -18,7 +18,7 @@ class BookActivity : BaseActivity<BookView, BookPresenterImpl>(), BookView {
         presenter.readFromStorage(file)
     }
 
-    override fun showView(data: File) {
+    override fun show(data: File) {
         pdfView.fromFile(data).load()
     }
 }

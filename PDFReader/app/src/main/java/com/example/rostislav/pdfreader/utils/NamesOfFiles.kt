@@ -1,7 +1,6 @@
 package com.example.rostislav.pdfreader.utils
 
 object NamesOfFiles {
-    const val EMPTY_STRING = ""
     const val FILE_NAME_1 = "https://www.telc.net/fileadmin/user_upload/telc_english_b2_uebungstest_1.pdf"
     const val FILE_NAME_2 = "https://upload.wikimedia.org/wikipedia/commons/b/b3/C_Sharp_Programming.pdf"
     const val FILE_NAME_3 = "https://upload.wikimedia.org/wikipedia/commons/3/38/European_History.pdf"

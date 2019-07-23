@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PDFReader</string>
+    <string name="percent_text_view">%1s%2s</string>
 </resources>

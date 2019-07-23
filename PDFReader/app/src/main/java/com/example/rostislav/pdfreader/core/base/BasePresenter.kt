@@ -35,7 +35,7 @@ abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
     inline fun <T> doAsync(
         crossinline requestData: () -> T,
         crossinline useData: (T) -> Unit,
-        crossinline onError: (Throwable) -> Unit
+        crossinline onError: (Throwable) -> Unit = this::onError
     ) {
         executor.execute {
             try {
