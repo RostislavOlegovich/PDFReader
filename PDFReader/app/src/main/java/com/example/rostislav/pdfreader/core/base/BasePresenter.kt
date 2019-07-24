@@ -5,15 +5,10 @@ import android.os.Looper
 import com.example.rostislav.pdfreader.core.App
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
-import com.example.rostislav.pdfreader.model.database.Database
-import com.example.rostislav.pdfreader.model.file.FileManager
-import com.example.rostislav.pdfreader.model.network.Network
 
 abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
-    val network: Network = (context as App).network
-    val database: Database = (context as App).database
+    val repository = (context as App).repository
     val executor = (context as App).executor
-    val fileManager: FileManager = (context as App).fileManager
     val handler = android.os.Handler(Looper.getMainLooper())
 
     override var view: V? = null

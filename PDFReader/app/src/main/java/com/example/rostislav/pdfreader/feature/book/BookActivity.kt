@@ -10,7 +10,7 @@ class BookActivity : BaseActivity<BookView, BookPresenterImpl>(), BookView {
 
     override fun assignLayout() = R.layout.activity_book
 
-    override fun createPresenter() = BookPresenterImpl(applicationContext)
+    override fun create() = BookPresenterImpl(applicationContext)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -7,7 +7,7 @@ import com.example.rostislav.pdfreader.entity.FileData
 class MainPresenter(val context: Context) : BasePresenter<View>(context), Presenter {
 
     override fun loadFile(fileData: FileData) {
-        if (fileManager.isFileExist(fileData.localPath)) {
+        if (repository.isFileExist(fileData.localPath)) {
             view?.fileDownloaded(fileData.localPath)
         } else {
             download(fileData.url, fileData.fileName)
@@ -16,20 +16,20 @@ class MainPresenter(val context: Context) : BasePresenter<View>(context), Presen
 
     override fun loadAllFiles() {
         doAsync(
-            { database.getAllData() }, { view?.show(it) }
+            { repository.getAllData() }, { view?.show(it) }
         )
     }
 
     private fun download(url: String, filename: String) {
         doAsync(
             {
-                val response = network.downloadFromNetwork(url)
+                val response = repository.downloadFromNetwork(url)
                 { bytesDownloaded ->
                     handler.post {
                         view?.loadingProgress(bytesDownloaded, url)
                     }
                 }
-                fileManager.writeFile(response, filename).absolutePath
+                repository.write(response, filename).absolutePath
             },
             {
                 writeToDatabase(it, url)
@@ -40,10 +40,10 @@ class MainPresenter(val context: Context) : BasePresenter<View>(context), Presen
     private fun writeToDatabase(filepath: String, url: String) {
         doAsync(
             {
-                if (fileManager.isFileExist(filepath)) {
-                    val file = fileManager.readFile(filepath)
-                    val thumbnail = fileManager.generateImageFromPdf(file)
-                    database.update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
+                if (repository.isFileExist(filepath)) {
+                    val file = repository.read(filepath)
+                    val thumbnail = repository.generateImageFromPdf(file)
+                    repository.update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
                 }
             },
             {

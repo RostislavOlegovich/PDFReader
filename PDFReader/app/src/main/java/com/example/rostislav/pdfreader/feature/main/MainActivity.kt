@@ -22,7 +22,7 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
 
     override fun assignLayout() = R.layout.activity_main
 
-    override fun createPresenter() = MainPresenter(applicationContext)
+    override fun create() = MainPresenter(applicationContext)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

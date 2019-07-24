@@ -8,8 +8,7 @@ import com.example.rostislav.pdfreader.utils.changeName
 import java.io.File
 import java.io.FileOutputStream
 
-
-class FileManagerImpl(val context: Context) : FileManager {
+class FileManagerImpl(private val context: Context) : FileManager {
 
     override fun writeFile(byteArray: ByteArray, filename: String): File {
         context.openFileOutput(filename, Context.MODE_PRIVATE)
