@@ -4,8 +4,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.rostislav.pdfreader.core.base.BaseAdapter
 import com.example.rostislav.pdfreader.entity.FileData
-import com.example.rostislav.pdfreader.utils.extention.inflate
-import com.example.rostislav.pdfreader.utils.extention.loadView
+import com.example.rostislav.pdfreader.utils.extension.inflate
+import com.example.rostislav.pdfreader.utils.extension.loadView
+import com.example.rostislav.pdfreader.utils.extension.visible
 import kotlinx.android.synthetic.main.item_book.view.*
 import java.io.File
 
@@ -24,6 +25,8 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
     class BookViewHolder(item: View) : BaseAdapter.BaseViewHolder<FileData>(item) {
         override fun bind(type: FileData) {
             itemView.tvNameBook.text = type.fileName
+            itemView.pbDownloading.visible(false)
+            itemView.tvPercentage.visible(false)
             itemView.ivBookTitle.loadView(itemView.context, File(type.thumbnail))
         }
     }
