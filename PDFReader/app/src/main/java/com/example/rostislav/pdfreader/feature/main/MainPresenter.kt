@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.rostislav.pdfreader.core.base.BasePresenter
 import com.example.rostislav.pdfreader.entity.FileData
 
-class MainPresenter(val context: Context) : BasePresenter<View>(context), Presenter {
+class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter {
 
     override fun loadFile(fileData: FileData) {
         if (repository.isFileExist(fileData.localPath)) {

@@ -12,6 +12,7 @@ class NetworkManager : Network {
                 .body(ProgressResponseBody(originalResponse.body!!, progressCallback))
                 .build()
         }).build()
+
         val request = Request.Builder()
             .url(url)
             .build()
