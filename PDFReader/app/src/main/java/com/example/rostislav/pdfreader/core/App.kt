@@ -1,6 +1,12 @@
 package com.example.rostislav.pdfreader.core
 
 import android.app.Application
+import com.example.rostislav.pdfreader.model.database.Database
+import com.example.rostislav.pdfreader.model.database.DatabaseManager
+import com.example.rostislav.pdfreader.model.file.FileManager
+import com.example.rostislav.pdfreader.model.file.FileManagerImpl
+import com.example.rostislav.pdfreader.model.network.Network
+import com.example.rostislav.pdfreader.model.network.NetworkManager
 import com.example.rostislav.pdfreader.model.presenter.PresenterManager
 import com.example.rostislav.pdfreader.model.presenter.PresenterManagerImpl
 import com.example.rostislav.pdfreader.repository.Repository
@@ -13,14 +19,20 @@ import java.util.concurrent.Executors
 class App : Application() {
     lateinit var repository: Repository
     lateinit var presenterManager: PresenterManager
+    lateinit var database: Database
+    lateinit var fileManager: FileManager
+    lateinit var network: Network
 
     val executor: ExecutorService =
         Executors.newFixedThreadPool(getNumberOfCores())
 
     override fun onCreate() {
         super.onCreate()
-        repository = RepositoryImpl(applicationContext)
+        database = DatabaseManager(applicationContext)
+        fileManager = FileManagerImpl(applicationContext)
         presenterManager = PresenterManagerImpl()
+        network = NetworkManager(applicationContext)
+        repository = RepositoryImpl(applicationContext)
         stethoInit()
     }
 

@@ -2,10 +2,13 @@ package com.example.rostislav.pdfreader.repository
 
 import android.content.Context
 import com.example.rostislav.pdfreader.core.base.BaseRepository
+import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.entity.FileData
+import com.example.rostislav.pdfreader.entity.Observable
+import com.example.rostislav.pdfreader.entity.Observer
 import java.io.File
 
-class RepositoryImpl(context: Context) : BaseRepository(context), Repository {
+class RepositoryImpl(context: Context) : Repository, BaseRepository(context) {
 
     override fun write(byteArray: ByteArray, filename: String) = fileManager.writeFile(byteArray, filename)
 
@@ -15,8 +18,8 @@ class RepositoryImpl(context: Context) : BaseRepository(context), Repository {
 
     override fun generateImageFromPdf(file: File) = fileManager.generateImageFromPdf(file)
 
-    override fun downloadFromNetwork(url: String, progressCallback: ((Long) -> Unit)?): ByteArray {
-        return network.downloadFromNetwork(url, progressCallback)
+    override fun downloadFromNetwork(url: String, observer: Observer<Data>) {
+        return network.downloadFromNetwork(url,observer)
     }
 
     override fun update(fileData: FileData) {

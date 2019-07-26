@@ -1,16 +1,19 @@
 package com.example.rostislav.pdfreader.repository
 
+import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.entity.FileData
+import com.example.rostislav.pdfreader.entity.Observer
 import java.io.File
 
 interface Repository {
+
     fun write(byteArray: ByteArray, filename: String): File
 
     fun read(localPath: String): File
 
     fun isFileExist(localPath: String): Boolean
 
-    fun downloadFromNetwork(url: String, progressCallback: ((Long) -> Unit)?): ByteArray
+    fun downloadFromNetwork(url: String,observer: Observer<Data>)
 
     fun update(fileData: FileData)
 

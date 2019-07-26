@@ -1,21 +1,25 @@
 package com.example.rostislav.pdfreader.model.network
 
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import android.content.Context
+import android.content.Intent
+import androidx.core.content.ContextCompat
+import com.example.rostislav.pdfreader.core.base.BaseObservable
+import com.example.rostislav.pdfreader.entity.Data
+import com.example.rostislav.pdfreader.entity.Observable
+import com.example.rostislav.pdfreader.entity.Observer
+import com.example.rostislav.pdfreader.feature.service.NetworkService
 
-class NetworkManager : Network {
+class NetworkManager(val context: Context) : Network {
+    private val observable = BaseObservable()
 
-    override fun downloadFromNetwork(url: String, progressCallback: ((Long) -> Unit)?): ByteArray {
-        val client = (OkHttpClient.Builder().addNetworkInterceptor {
-            val originalResponse = it.proceed(it.request())
-            originalResponse.newBuilder()
-                .body(ProgressResponseBody(originalResponse.body!!, progressCallback))
-                .build()
-        }).build()
+    override fun getObservable(): Observable<Data, Observer<Data>> {
+        return observable
+    }
 
-        val request = Request.Builder()
-            .url(url)
-            .build()
-        return client.newCall(request).execute().body!!.bytes()
+    override fun downloadFromNetwork(url: String, observer: Observer<Data> ) {
+        observable.subscribe(observer)
+        val serviceIntent = Intent(context, NetworkService::class.java)
+        serviceIntent.putExtra("url", url)
+        ContextCompat.startForegroundService(context, serviceIntent)
     }
 }

@@ -12,7 +12,7 @@ import java.util.*
 
 abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivity(), MVPView, PresenterFactory<V, P> {
     lateinit var presenter: P
-    lateinit var view: V
+    private lateinit var view: V
 
     private lateinit var presenterManager: PresenterManager
     private lateinit var activityUUID: String
@@ -29,7 +29,6 @@ abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivit
         } else {
             UUID.randomUUID().toString()
         }
-
         presenterManager = (applicationContext as App).presenterManager
         presenter = presenterManager.getPresenter(activityUUID, this)
         @Suppress("UNCHECKED_CAST")

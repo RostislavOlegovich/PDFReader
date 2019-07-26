@@ -3,7 +3,7 @@ package com.example.rostislav.pdfreader.model.network
 import okhttp3.ResponseBody
 import okio.*
 
-class ProgressResponseBody(val responseBody: ResponseBody, var progressCallback: ((bytesDownloaded: Long) -> Unit)?) :
+class ProgressResponseBody(val responseBody: ResponseBody, var progressCallback: ((Long) -> Unit)?) :
     ResponseBody() {
     private var bufferedSource: BufferedSource? = null
 
