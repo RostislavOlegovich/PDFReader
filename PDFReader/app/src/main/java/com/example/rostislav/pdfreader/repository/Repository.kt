@@ -1,8 +1,8 @@
 package com.example.rostislav.pdfreader.repository
 
+import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.entity.FileData
-import com.example.rostislav.pdfreader.entity.Observer
 import java.io.File
 
 interface Repository {
@@ -13,7 +13,7 @@ interface Repository {
 
     fun isFileExist(localPath: String): Boolean
 
-    fun downloadFromNetwork(url: String,observer: Observer<Data>)
+    fun downloadFromNetwork(url: String, observer: Observer<Data>)
 
     fun update(fileData: FileData)
 
@@ -21,5 +21,5 @@ interface Repository {
 
     fun getAllData(): List<FileData>
 
-    fun generateImageFromPdf(file: File): File
+    fun generateThumbnail(file: File): File
 }

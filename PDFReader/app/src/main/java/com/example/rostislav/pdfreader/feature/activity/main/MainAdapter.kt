@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.main
+package com.example.rostislav.pdfreader.feature.activity.main
 
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +19,7 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
         return BookViewHolder(view)
     }
 
-    fun getItemPosition(url: String, progress: Int) {
+    fun getItemPosition(progress: Int, url: String) {
         mapOfProgress[url] = progress
         notifyItemChanged(items.indexOfFirst { fileData -> fileData.url == url })
     }

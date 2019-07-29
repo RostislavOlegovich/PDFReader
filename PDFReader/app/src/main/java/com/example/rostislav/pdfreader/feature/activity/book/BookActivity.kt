@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.book
+package com.example.rostislav.pdfreader.feature.activity.book
 
 import android.os.Bundle
 import com.example.rostislav.pdfreader.R

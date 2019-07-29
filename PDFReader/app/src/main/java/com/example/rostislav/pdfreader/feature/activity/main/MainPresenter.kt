@@ -1,10 +1,10 @@
-package com.example.rostislav.pdfreader.feature.main
+package com.example.rostislav.pdfreader.feature.activity.main
 
 import android.content.Context
 import com.example.rostislav.pdfreader.core.base.BasePresenter
+import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.entity.FileData
-import com.example.rostislav.pdfreader.entity.Observer
 import com.example.rostislav.pdfreader.utils.getNameFromString
 
 class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter, Observer<Data> {
@@ -18,15 +18,14 @@ class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter,
     }
 
     override fun loadAllFiles() {
-        doAsync({ repository.getAllData() }, { view?.show(it) })
+        doAsync({ repository.getAllData() },
+            { view?.show(it) })
     }
 
     override fun onObserve(data: Data) {
         handler.post {
             view?.loadingProgress(data.progress, data.url)
         }
-
-
         data.file?.let {
             val filePath = repository.write(data.file, getNameFromString(data.url)).absolutePath
             writeToDatabase(filePath, data.url)
@@ -42,7 +41,7 @@ class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter,
             {
                 if (repository.isFileExist(filepath)) {
                     val file = repository.read(filepath)
-                    val thumbnail = repository.generateImageFromPdf(file)
+                    val thumbnail = repository.generateThumbnail(file)
                     repository.update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
                 }
             },

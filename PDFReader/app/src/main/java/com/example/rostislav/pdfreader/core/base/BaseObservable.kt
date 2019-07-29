@@ -1,8 +1,8 @@
 package com.example.rostislav.pdfreader.core.base
 
+import com.example.rostislav.pdfreader.core.observer.Observable
+import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
-import com.example.rostislav.pdfreader.entity.Observable
-import com.example.rostislav.pdfreader.entity.Observer
 
 class BaseObservable : Observable<Data, Observer<Data>> {
     val observers = mutableListOf<Observer<Data>>()

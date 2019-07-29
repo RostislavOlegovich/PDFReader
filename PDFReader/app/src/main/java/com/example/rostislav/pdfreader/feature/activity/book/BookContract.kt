@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.book
+package com.example.rostislav.pdfreader.feature.activity.book
 
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView

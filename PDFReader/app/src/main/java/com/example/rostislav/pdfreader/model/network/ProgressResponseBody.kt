@@ -3,9 +3,9 @@ package com.example.rostislav.pdfreader.model.network
 import okhttp3.ResponseBody
 import okio.*
 
-class ProgressResponseBody(val responseBody: ResponseBody, var progressCallback: ((Long) -> Unit)?) :
+class ProgressResponseBody(val responseBody: ResponseBody, val progressCallback: ((Long) -> Unit)?) :
     ResponseBody() {
-    private var bufferedSource: BufferedSource? = null
+    private val bufferedSource: BufferedSource? = null
 
     override fun contentLength() = responseBody.contentLength()
 

@@ -10,6 +10,8 @@ buildscript {
     ext.glide_version = "4.9.0"
     ext.recycler_version = "1.0.0"
     ext.card_version = "1.0.0"
+    ext.stetho_version = "1.5.1"
+    ext.okio_version = "2.2.2"
     repositories {
         google()
         jcenter()

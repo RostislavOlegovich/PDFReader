@@ -9,5 +9,5 @@ interface FileManager {
 
     fun isFileExist(localPath: String): Boolean
 
-    fun generateImageFromPdf(file: File): File
+    fun generateThumbnail(file: File): File
 }

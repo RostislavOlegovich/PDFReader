@@ -6,14 +6,14 @@ import android.os.Build
 import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.App
 import com.example.rostislav.pdfreader.entity.Data
-import com.example.rostislav.pdfreader.feature.main.MainActivity
+import com.example.rostislav.pdfreader.feature.activity.main.MainActivity
 import com.example.rostislav.pdfreader.model.network.Network
 import com.example.rostislav.pdfreader.model.network.ProgressResponseBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
 class NetworkService : IntentService(NetworkService::class.java.name) {
-    lateinit var network: Network
+    private lateinit var network: Network
 
     override fun onCreate() {
         super.onCreate()

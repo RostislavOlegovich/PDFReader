@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.entity
+package com.example.rostislav.pdfreader.core.observer
 
 interface Observer<D> {
 
