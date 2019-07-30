@@ -1,10 +1,12 @@
 package com.example.rostislav.pdfreader.core.base
 
+import android.os.Looper
 import com.example.rostislav.pdfreader.core.observer.Observable
 import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 
 class BaseObservable : Observable<Data, Observer<Data>> {
+    val handler = android.os.Handler(Looper.getMainLooper())
     val observers = mutableListOf<Observer<Data>>()
 
     override fun subscribe(observer: Observer<Data>) {
@@ -18,10 +20,14 @@ class BaseObservable : Observable<Data, Observer<Data>> {
     override fun isSubscribed(observer: Observer<Data>) = observers.contains(observer)
 
     override fun notifyObserversChange(data: Data) {
-        observers.forEach { it.onObserve(data) }
+        handler.post {
+            observers.forEach { it.onObserve(data) }
+        }
     }
 
     override fun notifyObserversError(exception: Throwable) {
-        observers.forEach { it.onError(exception) }
+        handler.post {
+            observers.forEach { it.onError(exception) }
+        }
     }
 }

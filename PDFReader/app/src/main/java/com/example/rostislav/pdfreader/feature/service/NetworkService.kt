@@ -23,7 +23,7 @@ class NetworkService : IntentService(NetworkService::class.java.name) {
     override fun onHandleIntent(intent: Intent?) {
         val url = intent?.getStringExtra("url")
         createNotificationChannel()
-        startForeground(1, createNotification(pendingIntentSetup()))
+        startForeground(SERVICE_FOREGROUND_ID, createNotification(pendingIntentSetup()))
         network.getObservable().notifyObserversChange(Data(PROGRESS, url!!, download(url)))
     }
 
@@ -32,7 +32,9 @@ class NetworkService : IntentService(NetworkService::class.java.name) {
             val originalResponse = it.proceed(it.request())
             originalResponse.newBuilder()
                 .body(ProgressResponseBody(originalResponse.body!!)
-                { progress -> network.getObservable().notifyObserversChange(Data(progress, url, null)) })
+                { progress ->
+                    network.getObservable().notifyObserversChange(Data(progress, url, null))
+                })
                 .build()
         }).build()
         val request = Request.Builder()
@@ -58,6 +60,7 @@ class NetworkService : IntentService(NetworkService::class.java.name) {
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setAutoCancel(true)
+            .setProgress(PROGRESS.toInt(), PROGRESS.toInt(), false)
             .setContentTitle("New file")
             .setStyle(Notification.BigTextStyle().bigText("Downloading..."))
             .build()
@@ -70,6 +73,7 @@ class NetworkService : IntentService(NetworkService::class.java.name) {
 
     companion object {
         const val CHANNEL_ID = "ForegroundServiceChannel"
+        const val SERVICE_FOREGROUND_ID = 1
         const val PROGRESS = 100L
     }
 }

@@ -6,8 +6,7 @@ import com.example.rostislav.pdfreader.entity.FileData
 import java.io.File
 
 interface Repository {
-
-    fun write(byteArray: ByteArray, filename: String): File
+    fun write(byteArray: ByteArray, filename: String)
 
     fun read(localPath: String): File
 

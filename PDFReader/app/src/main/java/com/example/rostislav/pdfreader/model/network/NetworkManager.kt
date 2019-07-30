@@ -9,7 +9,7 @@ import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.feature.service.NetworkService
 
-class NetworkManager(val context: Context) : Network {
+class NetworkManager(private val context: Context) : Network {
     private val observable = BaseObservable()
 
     override fun getObservable(): Observable<Data, Observer<Data>> {

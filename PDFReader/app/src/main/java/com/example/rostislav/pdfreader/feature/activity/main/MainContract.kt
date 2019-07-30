@@ -9,6 +9,8 @@ interface View : MVPView {
 
     fun fileDownloaded(data: String)
 
+    fun showThumbnail()
+
     fun loadingProgress(progress: Long, url: String)
 }
 

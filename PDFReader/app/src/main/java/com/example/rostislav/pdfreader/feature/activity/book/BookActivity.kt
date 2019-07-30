@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.activity_book.*
 import java.io.File
 
 class BookActivity : BaseActivity<BookView, BookPresenterImpl>(), BookView {
-
     override fun assignLayout() = R.layout.activity_book
 
     override fun create() = BookPresenterImpl(applicationContext)

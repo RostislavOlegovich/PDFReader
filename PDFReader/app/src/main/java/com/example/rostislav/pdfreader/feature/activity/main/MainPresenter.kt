@@ -6,9 +6,9 @@ import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.entity.FileData
 import com.example.rostislav.pdfreader.utils.getNameFromString
+import java.io.File
 
-class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter, Observer<Data> {
-
+class MainPresenter(val context: Context) : BasePresenter<View>(context), Presenter, Observer<Data> {
     override fun loadFile(fileData: FileData) {
         if (repository.isFileExist(fileData.localPath)) {
             view?.fileDownloaded(fileData.localPath)
@@ -18,16 +18,15 @@ class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter,
     }
 
     override fun loadAllFiles() {
-        doAsync({ repository.getAllData() },
-            { view?.show(it) })
+        doAsync({ repository.getAllData() }, { view?.show(it) })
     }
 
     override fun onObserve(data: Data) {
-        handler.post {
-            view?.loadingProgress(data.progress, data.url)
-        }
+        view?.loadingProgress(data.progress, data.url)
         data.file?.let {
-            val filePath = repository.write(data.file, getNameFromString(data.url)).absolutePath
+            val filename = getNameFromString(data.url)
+            repository.write(it, filename)
+            val filePath = File(context.filesDir, filename).absolutePath
             writeToDatabase(filePath, data.url)
         }
     }
@@ -37,16 +36,14 @@ class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter,
     }
 
     private fun writeToDatabase(filepath: String, url: String) {
+        val file = repository.read(filepath)
+        val thumbnail = repository.generateThumbnail(file)
         doAsync(
             {
-                if (repository.isFileExist(filepath)) {
-                    val file = repository.read(filepath)
-                    val thumbnail = repository.generateThumbnail(file)
-                    repository.update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
-                }
+                repository.update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
             },
             {
-                view?.fileDownloaded(filepath)
+                view?.showThumbnail()
             }
         )
     }

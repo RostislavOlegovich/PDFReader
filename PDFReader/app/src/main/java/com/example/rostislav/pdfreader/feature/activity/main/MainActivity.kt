@@ -1,6 +1,7 @@
 package com.example.rostislav.pdfreader.feature.activity.main
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -26,7 +27,11 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         presenter.loadAllFiles()
         initRecycler()
         adapter.itemClickListener = { position, _ ->
-            presenter.loadFile(adapter.items[position])
+            if (adapter.isLoadingNull(position)) {
+                presenter.loadFile(adapter.items[position])
+            } else {
+                Toast.makeText(this, "File is already loading", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -38,6 +43,10 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         rvBooks.visible(false)
         tvError.visible(true)
         tvError.text = exception.toString()
+    }
+
+    override fun showThumbnail() {
+        presenter.loadAllFiles()
     }
 
     override fun fileDownloaded(data: String) {

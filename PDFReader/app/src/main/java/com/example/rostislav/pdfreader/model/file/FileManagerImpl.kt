@@ -9,11 +9,9 @@ import java.io.File
 import java.io.FileOutputStream
 
 class FileManagerImpl(private val context: Context) : FileManager {
-
-    override fun writeFile(byteArray: ByteArray, filename: String): File {
+    override fun writeFile(byteArray: ByteArray, filename: String) {
         context.openFileOutput(filename, Context.MODE_PRIVATE)
             .use { it.write(byteArray) }
-        return File(context.filesDir, filename)
     }
 
     override fun readFile(localPath: String) = File(localPath)
@@ -32,6 +30,6 @@ class FileManagerImpl(private val context: Context) : FileManager {
 
     companion object {
         const val DEFAULT_PAGE = 0
-        const val QUALITY_IN_PERCENTS = 100
+        const val QUALITY_IN_PERCENTS = 50
     }
 }

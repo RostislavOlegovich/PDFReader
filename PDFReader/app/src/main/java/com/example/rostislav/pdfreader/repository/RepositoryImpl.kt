@@ -8,8 +8,9 @@ import com.example.rostislav.pdfreader.entity.FileData
 import java.io.File
 
 class RepositoryImpl(context: Context) : Repository, BaseRepository(context) {
-
-    override fun write(byteArray: ByteArray, filename: String) = fileManager.writeFile(byteArray, filename)
+    override fun write(byteArray: ByteArray, filename: String) {
+        fileManager.writeFile(byteArray, filename)
+    }
 
     override fun read(localPath: String) = fileManager.readFile(localPath)
 
@@ -18,7 +19,7 @@ class RepositoryImpl(context: Context) : Repository, BaseRepository(context) {
     override fun generateThumbnail(file: File) = fileManager.generateThumbnail(file)
 
     override fun downloadFromNetwork(url: String, observer: Observer<Data>) {
-        return network.downloadFromNetwork(url, observer)
+        network.downloadFromNetwork(url, observer)
     }
 
     override fun update(fileData: FileData) {

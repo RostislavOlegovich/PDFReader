@@ -12,22 +12,17 @@ import kotlinx.android.synthetic.main.item_book.view.*
 import java.io.File
 
 class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>() {
-    private val mapOfProgress = HashMap<String, Int>()
+    val mapOfProgress = mutableMapOf<String, Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<FileData> {
         val view = parent.inflate(R.layout.item_book)
         return BookViewHolder(view)
     }
 
-    fun getItemPosition(progress: Int, url: String) {
-        mapOfProgress[url] = progress
-        notifyItemChanged(items.indexOfFirst { fileData -> fileData.url == url })
-    }
-
     override fun onBindViewHolder(holder: BaseViewHolder<FileData>, position: Int) {
         super.onBindViewHolder(holder, position)
         val itemProgress = items[position].url
-        if (mapOfProgress[itemProgress] != null) {
+        if (mapOfProgress[itemProgress] != null && mapOfProgress[itemProgress]!! != 100) {
             holder.itemView.apply {
                 pbDownloading.apply {
                     visible(true)
@@ -42,7 +37,28 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
                     )
                 }
             }
+            if (mapOfProgress[itemProgress] != null && mapOfProgress[itemProgress]!! == 100) {
+                holder.itemView.apply {
+                    pbDownloading.apply {
+                        visible(false)
+                    }
+                    tvPercentage.apply {
+                        visible(false)
+                    }
+                    mapOfProgress.remove(itemProgress)
+                }
+            }
         }
+    }
+
+    fun getItemPosition(progress: Int, url: String) {
+        mapOfProgress[url] = progress
+        notifyItemChanged(items.indexOfFirst { fileData -> fileData.url == url })
+    }
+
+    fun isLoadingNull(position: Int): Boolean {
+        val itemProgress = items[position].url
+        return mapOfProgress[itemProgress] == null
     }
 
     class BookViewHolder(item: View) : BaseAdapter.BaseViewHolder<FileData>(item) {

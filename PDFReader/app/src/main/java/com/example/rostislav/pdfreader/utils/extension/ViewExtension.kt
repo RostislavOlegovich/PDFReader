@@ -32,8 +32,8 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-fun <T> Context.openActivity(it: Class<T>, extras: Bundle.() -> Unit = {}) {
-    val intent = Intent(this, it)
+fun <T> Context.openActivity(activity: Class<T>, extras: Bundle.() -> Unit = {}) {
+    val intent = Intent(this, activity)
     intent.putExtras(Bundle().apply(extras))
     startActivity(intent)
 }
