@@ -11,11 +11,11 @@ import com.example.rostislav.pdfreader.model.presenter.PresenterManager
 import java.util.*
 
 abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivity(), MVPView, PresenterFactory<V, P> {
-    lateinit var presenter: P
     private lateinit var view: V
-
     private lateinit var presenterManager: PresenterManager
     private lateinit var activityUUID: String
+
+    lateinit var presenter: P
 
     @LayoutRes
     abstract fun assignLayout(): Int
@@ -23,12 +23,7 @@ abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(assignLayout())
-
-        activityUUID = if (savedInstanceState != null) {
-            savedInstanceState.getString(ACTIVITY_UUID)!!
-        } else {
-            UUID.randomUUID().toString()
-        }
+        setupUUID(savedInstanceState)
         presenterManager = (applicationContext as App).presenterManager
         presenter = presenterManager.getPresenter(activityUUID, this)
         @Suppress("UNCHECKED_CAST")
@@ -47,6 +42,14 @@ abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivit
     }
 
     override fun error(exception: Throwable) {
+    }
+
+    private fun setupUUID(savedInstanceState: Bundle?) {
+        activityUUID = if (savedInstanceState != null) {
+            savedInstanceState.getString(ACTIVITY_UUID)!!
+        } else {
+            UUID.randomUUID().toString()
+        }
     }
 
     companion object {

@@ -17,14 +17,14 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class App : Application() {
+    val executor: ExecutorService =
+        Executors.newFixedThreadPool(getNumberOfCores())
+
     lateinit var repository: Repository
     lateinit var presenterManager: PresenterManager
     lateinit var database: Database
     lateinit var fileManager: FileManager
     lateinit var network: Network
-
-    val executor: ExecutorService =
-        Executors.newFixedThreadPool(getNumberOfCores())
 
     override fun onCreate() {
         super.onCreate()

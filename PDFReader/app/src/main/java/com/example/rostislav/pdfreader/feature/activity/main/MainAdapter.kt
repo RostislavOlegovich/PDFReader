@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_book.view.*
 import java.io.File
 
 class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>() {
-    val mapOfProgress = mutableMapOf<String, Int>()
+    private val mapOfProgress = mutableMapOf<String, Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<FileData> {
         val view = parent.inflate(R.layout.item_book)
@@ -22,22 +22,23 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
     override fun onBindViewHolder(holder: BaseViewHolder<FileData>, position: Int) {
         super.onBindViewHolder(holder, position)
         val itemProgress = items[position].url
-        if (mapOfProgress[itemProgress] != null && mapOfProgress[itemProgress]!! != 100) {
+        val currentProgress = mapOfProgress[itemProgress]
+        if (currentProgress != null && currentProgress != 100) {
             holder.itemView.apply {
                 pbDownloading.apply {
                     visible(true)
-                    progress = mapOfProgress[itemProgress]!!
+                    progress = currentProgress
                 }
                 tvPercentage.apply {
                     visible(true)
                     text = resources.getString(
                         R.string.percent_text_view,
-                        mapOfProgress[itemProgress]!!.toString(),
+                        currentProgress.toString(),
                         "%"
                     )
                 }
             }
-            if (mapOfProgress[itemProgress] != null && mapOfProgress[itemProgress]!! == 100) {
+            if (currentProgress == 100) {
                 holder.itemView.apply {
                     pbDownloading.apply {
                         visible(false)
@@ -51,12 +52,12 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
         }
     }
 
-    fun getItemPosition(progress: Int, url: String) {
+    fun setItemPosition(progress: Int, url: String) {
         mapOfProgress[url] = progress
         notifyItemChanged(items.indexOfFirst { fileData -> fileData.url == url })
     }
 
-    fun isLoadingNull(position: Int): Boolean {
+    fun isLoadingExist(position: Int): Boolean {
         val itemProgress = items[position].url
         return mapOfProgress[itemProgress] == null
     }

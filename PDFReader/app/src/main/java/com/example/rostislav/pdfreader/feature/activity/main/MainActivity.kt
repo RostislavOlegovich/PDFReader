@@ -27,7 +27,7 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         presenter.loadAllFiles()
         initRecycler()
         adapter.itemClickListener = { position, _ ->
-            if (adapter.isLoadingNull(position)) {
+            if (adapter.isLoadingExist(position)) {
                 presenter.loadFile(adapter.items[position])
             } else {
                 Toast.makeText(this, "File is already loading", Toast.LENGTH_SHORT).show()
@@ -55,7 +55,7 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
     }
 
     override fun loadingProgress(progress: Long, url: String) {
-        adapter.getItemPosition(progress.toInt(), url)
+        adapter.setItemPosition(progress.toInt(), url)
     }
 
     private fun initRecycler() {
