@@ -5,7 +5,9 @@ import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 
 interface Network {
-    fun getObservable(): Observable<Data, Observer<Data>>
+    fun startNetworkService(url: String)
 
-    fun downloadFromNetwork(url: String, observer: Observer<Data>)
+    fun downloadFromNetwork(url: String)
+
+    fun getObservable(): Observable<Data, Observer<Data>>
 }

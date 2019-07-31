@@ -11,6 +11,7 @@ import com.example.rostislav.pdfreader.feature.activity.book.BookActivity
 import com.example.rostislav.pdfreader.utils.extension.openActivity
 import com.example.rostislav.pdfreader.utils.extension.visible
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.toast
 
 
 class MainActivity : BaseActivity<View, Presenter>(), View {
@@ -30,7 +31,7 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
             if (adapter.isLoadingExist(position)) {
                 presenter.loadFile(adapter.items[position])
             } else {
-                Toast.makeText(this, "File is already loading", Toast.LENGTH_SHORT).show()
+                toast("File is already loading")
             }
         }
     }

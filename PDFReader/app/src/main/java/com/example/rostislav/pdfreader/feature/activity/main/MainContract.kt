@@ -15,7 +15,7 @@ interface View : MVPView {
 }
 
 interface Presenter : MVPPresenter<View> {
-    fun loadFile(fileData: FileData)
-
     fun loadAllFiles()
+
+    fun loadFile(fileData: FileData)
 }

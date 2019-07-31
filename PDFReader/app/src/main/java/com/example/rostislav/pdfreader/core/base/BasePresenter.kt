@@ -5,9 +5,11 @@ import android.os.Looper
 import com.example.rostislav.pdfreader.core.App
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
+import com.example.rostislav.pdfreader.repository.FileRepository
+import com.example.rostislav.pdfreader.repository.FileRepositoryImpl
 
 abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
-    val repository = (context as App).repository
+    val repository: FileRepository = FileRepositoryImpl(context)
     val executor = (context as App).executor
     val handler = android.os.Handler(Looper.getMainLooper())
 

@@ -5,9 +5,9 @@ import com.example.rostislav.pdfreader.core.observer.Observable
 import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 
-class BaseObservable : Observable<Data, Observer<Data>> {
-    val handler = android.os.Handler(Looper.getMainLooper())
-    val observers = mutableListOf<Observer<Data>>()
+open class BaseObservable : Observable<Data, Observer<Data>> {
+    private val handler = android.os.Handler(Looper.getMainLooper())
+    private val observers = mutableListOf<Observer<Data>>()
 
     override fun subscribe(observer: Observer<Data>) {
         observers.add(observer)

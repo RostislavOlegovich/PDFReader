@@ -9,8 +9,6 @@ import com.example.rostislav.pdfreader.model.network.Network
 import com.example.rostislav.pdfreader.model.network.NetworkManager
 import com.example.rostislav.pdfreader.model.presenter.PresenterManager
 import com.example.rostislav.pdfreader.model.presenter.PresenterManagerImpl
-import com.example.rostislav.pdfreader.repository.Repository
-import com.example.rostislav.pdfreader.repository.RepositoryImpl
 import com.example.rostislav.pdfreader.utils.system.getNumberOfCores
 import com.facebook.stetho.Stetho
 import java.util.concurrent.ExecutorService
@@ -20,7 +18,6 @@ class App : Application() {
     val executor: ExecutorService =
         Executors.newFixedThreadPool(getNumberOfCores())
 
-    lateinit var repository: Repository
     lateinit var presenterManager: PresenterManager
     lateinit var database: Database
     lateinit var fileManager: FileManager
@@ -32,7 +29,6 @@ class App : Application() {
         fileManager = FileManagerImpl(applicationContext)
         presenterManager = PresenterManagerImpl()
         network = NetworkManager(applicationContext)
-        repository = RepositoryImpl(applicationContext)
         stethoInit()
     }
 

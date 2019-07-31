@@ -46,7 +46,6 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
                     tvPercentage.apply {
                         visible(false)
                     }
-                    mapOfProgress.remove(itemProgress)
                 }
             }
         }

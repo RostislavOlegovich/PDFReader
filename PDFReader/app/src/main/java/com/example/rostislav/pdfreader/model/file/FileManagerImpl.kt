@@ -16,8 +16,6 @@ class FileManagerImpl(private val context: Context) : FileManager {
 
     override fun readFile(localPath: String) = File(localPath)
 
-    override fun isFileExist(localPath: String) = File(localPath).exists()
-
     override fun generateThumbnail(file: File): File {
         val fileThumbnail = File(context.filesDir, changeName(file.name))
         val pdfRenderer = PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY))

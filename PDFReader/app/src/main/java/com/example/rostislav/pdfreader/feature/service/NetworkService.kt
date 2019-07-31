@@ -3,44 +3,42 @@ package com.example.rostislav.pdfreader.feature.service
 import android.app.*
 import android.content.Intent
 import android.os.Build
+import android.os.IBinder
 import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.App
+import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.feature.activity.main.MainActivity
 import com.example.rostislav.pdfreader.model.network.Network
-import com.example.rostislav.pdfreader.model.network.ProgressResponseBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import org.jetbrains.anko.doAsync
 
-class NetworkService : IntentService(NetworkService::class.java.name) {
+class NetworkService : Service(), Observer<Data> {
     private lateinit var network: Network
+
+    override fun onObserve(data: Data) {
+        createNotificationChannel()
+        createNotification(pendingIntentSetup(), data)
+    }
+
+    override fun onError(exception: Throwable) {
+    }
 
     override fun onCreate() {
         super.onCreate()
         network = (applicationContext as App).network
     }
 
-    override fun onHandleIntent(intent: Intent?) {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         val url = intent?.getStringExtra("url")
-        createNotificationChannel()
-        startForeground(SERVICE_FOREGROUND_ID, createNotification(pendingIntentSetup()))
-        network.getObservable().notifyObserversChange(Data(PROGRESS, url!!, download(url)))
+        doAsync {
+            network.downloadFromNetwork(url!!)
+        }
+        return START_STICKY
     }
 
-    private fun download(url: String): ByteArray {
-        val client = (OkHttpClient.Builder().addNetworkInterceptor {
-            val originalResponse = it.proceed(it.request())
-            originalResponse.newBuilder()
-                .body(ProgressResponseBody(originalResponse.body!!)
-                { progress ->
-                    network.getObservable().notifyObserversChange(Data(progress, url, null))
-                })
-                .build()
-        }).build()
-        val request = Request.Builder()
-            .url(url)
-            .build()
-        return client.newCall(request).execute().body!!.bytes()
+    override fun onBind(p0: Intent?): IBinder? {
+        return null
     }
 
     private fun createNotificationChannel() {
@@ -55,12 +53,12 @@ class NetworkService : IntentService(NetworkService::class.java.name) {
         }
     }
 
-    private fun createNotification(pendingIntent: PendingIntent): Notification {
+    private fun createNotification(pendingIntent: PendingIntent, data: Data): Notification {
         return Notification.Builder(this, CHANNEL_ID)
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setAutoCancel(true)
-            .setProgress(PROGRESS.toInt(), PROGRESS.toInt(), false)
+            .setProgress(PROGRESS.toInt(), data.progress.toInt(), false)
             .setContentTitle("New file")
             .setStyle(Notification.BigTextStyle().bigText("Downloading..."))
             .build()
@@ -75,5 +73,9 @@ class NetworkService : IntentService(NetworkService::class.java.name) {
         const val CHANNEL_ID = "ForegroundServiceChannel"
         const val SERVICE_FOREGROUND_ID = 1
         const val PROGRESS = 100L
+
+//        private fun createIntent(context: Context, url: String):Intent{
+//
+//        }
     }
 }
