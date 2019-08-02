@@ -11,6 +11,10 @@ class DatabaseManager(context: Context) : Database {
 
     override fun insert() {}
 
+    override fun delete(fileData: FileData) {
+        appDatabase.fileDatabaseDao.delete(fileData.toFileDataRoom())
+    }
+
     override fun update(fileData: FileData) {
         appDatabase.fileDatabaseDao.update(fileData.toFileDataRoom())
     }

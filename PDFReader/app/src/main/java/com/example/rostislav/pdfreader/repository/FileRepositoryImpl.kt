@@ -1,45 +1,49 @@
 package com.example.rostislav.pdfreader.repository
 
 import android.content.Context
-import com.example.rostislav.pdfreader.core.base.BaseFileRepository
-import com.example.rostislav.pdfreader.core.observer.Observable
-import com.example.rostislav.pdfreader.core.observer.Observer
-import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.entity.FileData
-import org.jetbrains.anko.doAsync
+import com.example.rostislav.pdfreader.model.database.Database
+import com.example.rostislav.pdfreader.model.file.FileManager
+import com.example.rostislav.pdfreader.model.network.Network
+import com.example.rostislav.pdfreader.utils.getNameFromString
+import com.example.rostislav.pdfreader.utils.system.FileNotExistException
 import java.io.File
 
-class FileRepositoryImpl(private val context: Context) : FileRepository, BaseFileRepository(context) {
+class FileRepositoryImpl(
+    private val context: Context,
+    private val network: Network,
+    private val fileManager: FileManager,
+    private val database: Database
 
-    override fun read(localPath: String): File {
-        return fileManager.readFile(localPath)
-    }
+) : FileRepository {
+    private var callback: ((ByteArray) -> Unit)? = {}
 
-    override fun write(byteArray: ByteArray, filename: String, url: String) {
-        fileManager.writeFile(byteArray, filename)
-        val filePath = File(context.filesDir, filename).absolutePath
-        val file = fileManager.readFile(filePath)
-        val thumbnail = generateThumbnail(file)
-        doAsync {
-            update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
+    override fun loadFile(url: String): File {
+        val fileData = database.getData(url)
+        val file = fileManager.readFile(fileData.localPath)
+        return if (file.exists()) {
+            file
+        } else {
+            download(url)
+            throw FileNotExistException(null)
         }
     }
 
-    override fun download(url: String) {
-        network.startNetworkService(url)
+    override fun loadAllFiles() = database.getAllData()
+
+    override fun getObservable() = network.getObservable()
+
+    private fun download(url: String) {
+        callback = { byteArray -> write(byteArray, url) }
+        network.startNetworkService(url, callback)
     }
 
-    override fun getAllData() = database.getAllData()
-
-    override fun getObservable(): Observable<Data, Observer<Data>> {
-        return network.getObservable()
+    private fun write(byteArray: ByteArray, url: String) {
+        val filename = getNameFromString(url)
+        fileManager.writeFile(byteArray, filename)
+        val filePath = File(context.filesDir, filename).absolutePath
+        val file = fileManager.readFile(filePath)
+        val thumbnail = fileManager.generateThumbnail(file)
+        database.update(FileData(url, file.absolutePath, file.name, thumbnail.absolutePath))
     }
-
-    private fun generateThumbnail(file: File) = fileManager.generateThumbnail(file)
-
-    private fun update(fileData: FileData) {
-        database.update(fileData)
-    }
-
-    private fun getData(key: String) = database.getData(key)
 }

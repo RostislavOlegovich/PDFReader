@@ -20,14 +20,14 @@ open class BaseObservable : Observable<Data, Observer<Data>> {
     override fun isSubscribed(observer: Observer<Data>) = observers.contains(observer)
 
     override fun notifyObserversChange(data: Data) {
-        handler.post {
-            observers.forEach { it.onObserve(data) }
-        }
+        handler.postDelayed({ observers.forEach { it.onObserve(data) } }, TIMEOUT)
     }
 
     override fun notifyObserversError(exception: Throwable) {
-        handler.post {
-            observers.forEach { it.onError(exception) }
-        }
+        handler.post { observers.forEach { it.onError(exception) } }
+    }
+
+    companion object {
+        const val TIMEOUT = 300L
     }
 }

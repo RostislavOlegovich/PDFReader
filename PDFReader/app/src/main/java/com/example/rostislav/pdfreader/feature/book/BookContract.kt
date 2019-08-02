@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.activity.book
+package com.example.rostislav.pdfreader.feature.book
 
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
@@ -9,5 +9,5 @@ interface BookView : MVPView {
 }
 
 interface BookPresenter : MVPPresenter<BookView> {
-    fun readFromStorage(localPath: String)
+    fun readFromStorage(url: String)
 }

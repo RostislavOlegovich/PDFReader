@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.activity.main
+package com.example.rostislav.pdfreader.feature.main
 
 import android.view.View
 import android.view.ViewGroup
@@ -46,12 +46,13 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
                     tvPercentage.apply {
                         visible(false)
                     }
+                    mapOfProgress.remove(itemProgress)
                 }
             }
         }
     }
 
-    fun setItemPosition(progress: Int, url: String) {
+    fun setProgressDownloading(progress: Int, url: String) {
         mapOfProgress[url] = progress
         notifyItemChanged(items.indexOfFirst { fileData -> fileData.url == url })
     }

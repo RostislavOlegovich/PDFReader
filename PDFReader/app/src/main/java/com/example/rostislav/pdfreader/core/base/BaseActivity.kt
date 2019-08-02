@@ -3,11 +3,12 @@ package com.example.rostislav.pdfreader.core.base
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rostislav.pdfreader.core.App
+import com.example.rostislav.pdfreader.core.di.ManagersInjection
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
 import com.example.rostislav.pdfreader.model.presenter.PresenterFactory
 import com.example.rostislav.pdfreader.model.presenter.PresenterManager
+import com.example.rostislav.pdfreader.model.presenter.PresenterManagerImpl
 import java.util.*
 
 abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivity(), MVPView, PresenterFactory<V, P> {
@@ -24,7 +25,7 @@ abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivit
         super.onCreate(savedInstanceState)
         setContentView(assignLayout())
         setupUUID(savedInstanceState)
-        presenterManager = (applicationContext as App).presenterManager
+        presenterManager = ManagersInjection.get<PresenterManagerImpl>()
         presenter = presenterManager.getPresenter(activityUUID, this)
         @Suppress("UNCHECKED_CAST")
         view = this as V

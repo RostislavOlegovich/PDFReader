@@ -5,7 +5,7 @@ import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
 
 class PresenterManagerImpl : PresenterManager {
-    private val presenters = ArrayMap<String, Any>()
+    private val presenters = ArrayMap<String, MVPPresenter<*>>()
 
     @Suppress("UNCHECKED_CAST")
     override fun <V : MVPView, P : MVPPresenter<V>> getPresenter(tag: String, factory: PresenterFactory<V, P>): P {

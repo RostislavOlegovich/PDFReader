@@ -1,17 +1,16 @@
-package com.example.rostislav.pdfreader.feature.activity.main
+package com.example.rostislav.pdfreader.feature.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.rostislav.pdfreader.core.base.BaseActivity
 import com.example.rostislav.pdfreader.entity.FileData
-import com.example.rostislav.pdfreader.feature.activity.book.BookActivity
+import com.example.rostislav.pdfreader.feature.book.BookActivity
 import com.example.rostislav.pdfreader.utils.extension.openActivity
 import com.example.rostislav.pdfreader.utils.extension.visible
+import com.example.rostislav.pdfreader.utils.getExtraStringIntent
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.toast
 
 
 class MainActivity : BaseActivity<View, Presenter>(), View {
@@ -28,11 +27,11 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         presenter.loadAllFiles()
         initRecycler()
         adapter.itemClickListener = { position, _ ->
-            if (adapter.isLoadingExist(position)) {
-                presenter.loadFile(adapter.items[position])
-            } else {
-                toast("File is already loading")
-            }
+            //            if (adapter.isLoadingExist(position)) {
+            presenter.loadFile(adapter.items[position].url)
+//            } else {
+//                toast("File is already loading")
+//            }
         }
     }
 
@@ -51,12 +50,12 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
     }
 
     override fun fileDownloaded(data: String) {
-        openActivity(BookActivity::class.java) { putString("filePath", data) }
+        openActivity(BookActivity::class.java) { putString(getExtraStringIntent(), data) }
         presenter.loadAllFiles()
     }
 
     override fun loadingProgress(progress: Long, url: String) {
-        adapter.setItemPosition(progress.toInt(), url)
+        adapter.setProgressDownloading(progress.toInt(), url)
     }
 
     private fun initRecycler() {

@@ -5,6 +5,8 @@ import com.example.rostislav.pdfreader.entity.FileData
 interface Database {
     fun insert()
 
+    fun delete(fileData: FileData)
+
     fun update(fileData: FileData)
 
     fun getData(key: String): FileData

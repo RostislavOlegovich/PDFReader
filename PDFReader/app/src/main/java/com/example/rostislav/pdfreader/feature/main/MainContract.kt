@@ -1,4 +1,4 @@
-package com.example.rostislav.pdfreader.feature.activity.main
+package com.example.rostislav.pdfreader.feature.main
 
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
@@ -17,5 +17,5 @@ interface View : MVPView {
 interface Presenter : MVPPresenter<View> {
     fun loadAllFiles()
 
-    fun loadFile(fileData: FileData)
+    fun loadFile(url: String)
 }

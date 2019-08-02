@@ -7,13 +7,9 @@ import com.example.rostislav.pdfreader.entity.FileData
 import java.io.File
 
 interface FileRepository {
-    fun read(localPath: String): File
+    fun loadFile(url: String): File
 
-    fun write(byteArray: ByteArray, filename: String, url: String)
-
-    fun download(url: String)
-
-    fun getAllData(): List<FileData>
+    fun loadAllFiles(): List<FileData>
 
     fun getObservable(): Observable<Data, Observer<Data>>
 }

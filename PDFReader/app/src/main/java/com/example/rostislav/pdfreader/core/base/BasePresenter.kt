@@ -2,15 +2,16 @@ package com.example.rostislav.pdfreader.core.base
 
 import android.content.Context
 import android.os.Looper
-import com.example.rostislav.pdfreader.core.App
+import com.example.rostislav.pdfreader.core.di.ManagersInjection
+import com.example.rostislav.pdfreader.core.di.RepositoryInjection
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
 import com.example.rostislav.pdfreader.repository.FileRepository
-import com.example.rostislav.pdfreader.repository.FileRepositoryImpl
+import java.util.concurrent.ThreadPoolExecutor
 
 abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
-    val repository: FileRepository = FileRepositoryImpl(context)
-    val executor = (context as App).executor
+    val repository = RepositoryInjection.create<FileRepository>(context)
+    val executor = ManagersInjection.get<ThreadPoolExecutor>()
     val handler = android.os.Handler(Looper.getMainLooper())
 
     override var view: V? = null
@@ -31,8 +32,7 @@ abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
 
     inline fun <T> doAsync(
         crossinline requestData: () -> T,
-        crossinline useData: (T) -> Unit,
-        crossinline onError: (Throwable) -> Unit = this::onError
+        crossinline useData: (T) -> Unit
     ) {
         executor.execute {
             try {
@@ -40,7 +40,6 @@ abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
                 handler.post { useData.invoke(result) }
             } catch (exception: Exception) {
                 exception.printStackTrace()
-                handler.post { onError.invoke(exception) }
             }
         }
     }
