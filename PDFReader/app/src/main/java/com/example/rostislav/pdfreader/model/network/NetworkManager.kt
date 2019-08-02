@@ -16,7 +16,7 @@ class NetworkManager(private val context: Context) : Network, Observable<Data, O
 
     override fun startNetworkService(url: String, callBack: ((ByteArray) -> Unit)?) {
         callback = callBack
-        val serviceIntent = context.createIntent(NetworkService::class.java) {
+        val serviceIntent = context.createIntent(NetworkService::class.java, ACTION_START_SERVICE) {
             putString(getExtraStringIntent(), url)
         }
         context.startService(serviceIntent)
@@ -39,7 +39,13 @@ class NetworkManager(private val context: Context) : Network, Observable<Data, O
 
     override fun returnBytesArray(bytes: ByteArray) {
         callback?.invoke(bytes)
+        context.startService(context.createIntent(NetworkService::class.java, ACTION_STOP_SERVICE))
     }
 
     override fun getObservable() = this as Observable<Data, Observer<Data>>
+
+    companion object {
+        private const val ACTION_START_SERVICE = "start_service"
+        private const val ACTION_STOP_SERVICE = "stop_service"
+    }
 }

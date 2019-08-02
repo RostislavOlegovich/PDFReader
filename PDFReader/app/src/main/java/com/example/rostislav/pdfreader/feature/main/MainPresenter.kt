@@ -5,7 +5,7 @@ import com.example.rostislav.pdfreader.core.base.BasePresenter
 import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 
-class MainPresenter(context: Context) : BasePresenter<View>(context), Presenter, Observer<Data> {
+class MainPresenter(val context: Context) : BasePresenter<View>(context), Presenter, Observer<Data> {
     override fun loadAllFiles() {
         doAsync({ repository.loadAllFiles() }, { view?.show(it) })
     }

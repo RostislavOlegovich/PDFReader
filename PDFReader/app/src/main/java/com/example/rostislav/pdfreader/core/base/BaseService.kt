@@ -6,7 +6,6 @@ import android.os.IBinder
 import com.example.rostislav.pdfreader.core.di.ManagersInjection
 import com.example.rostislav.pdfreader.model.network.Network
 import com.example.rostislav.pdfreader.model.network.NetworkManager
-import com.example.rostislav.pdfreader.utils.NotificationUtils
 import java.util.concurrent.Executor
 import java.util.concurrent.ThreadPoolExecutor
 
@@ -20,8 +19,6 @@ abstract class BaseService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        NotificationUtils.createNotificationChannel(applicationContext)
-        startForeground(SERVICE_FOREGROUND_ID, NotificationUtils.createNotification(applicationContext))
         return START_STICKY
     }
 
@@ -29,9 +26,7 @@ abstract class BaseService : Service() {
         return null
     }
 
-    companion object {
-        private const val ACTION_START_SERVICE = "start_service"
-        private const val ACTION_STOP_SERVICE = "stop_service"
-        private const val SERVICE_FOREGROUND_ID = 1
+    fun stopService() {
+        stopSelf()
     }
 }
