@@ -18,6 +18,10 @@ fun View.visible(boolean: Boolean) {
     }
 }
 
+fun View.gone(vararg views: View) = views.forEach { it.visibility = View.GONE }
+
+fun View.visible(vararg views: View) = views.forEach { it.visibility = View.VISIBLE }
+
 fun ImageView.loadView(context: Context, file: File) {
     Glide.with(context)
         .load(file)

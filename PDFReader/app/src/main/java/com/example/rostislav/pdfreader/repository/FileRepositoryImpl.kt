@@ -16,8 +16,6 @@ class FileRepositoryImpl(
     private val database: Database
 
 ) : FileRepository {
-    private var callback: ((ByteArray) -> Unit)? = {}
-
     override fun loadFile(url: String): File {
         val fileData = database.getData(url)
         val file = fileManager.readFile(fileData.localPath)
@@ -34,8 +32,7 @@ class FileRepositoryImpl(
     override fun getObservable() = network.getObservable()
 
     private fun download(url: String) {
-        callback = { byteArray -> write(byteArray, url) }
-        network.startNetworkService(url, callback)
+        network.startNetworkService(url) { byteArray -> write(byteArray, url) }
     }
 
     private fun write(byteArray: ByteArray, url: String) {

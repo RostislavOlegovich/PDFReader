@@ -1,18 +1,16 @@
 package com.example.rostislav.pdfreader.core.base
 
 import android.content.Context
-import android.os.Looper
-import com.example.rostislav.pdfreader.core.di.ManagersInjection
+import com.example.rostislav.pdfreader.core.configuration.Configuration
 import com.example.rostislav.pdfreader.core.di.RepositoryInjection
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
 import com.example.rostislav.pdfreader.repository.FileRepository
-import java.util.concurrent.ThreadPoolExecutor
 
 abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
     val repository = RepositoryInjection.create<FileRepository>(context)
-    val executor = ManagersInjection.get<ThreadPoolExecutor>()
-    val handler = android.os.Handler(Looper.getMainLooper())
+    val executors = Configuration.executors
+    val handler = Configuration.handler
 
     override var view: V? = null
 
@@ -33,13 +31,15 @@ abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
     inline fun <T> doAsync(
         crossinline requestData: () -> T,
         crossinline useData: (T) -> Unit
+//        crossinline onError: (Throwable) -> Unit = this::onError
     ) {
-        executor.execute {
+        executors.execute {
             try {
                 val result = requestData.invoke()
                 handler.post { useData.invoke(result) }
             } catch (exception: Exception) {
                 exception.printStackTrace()
+//                handler.post { onError.invoke(exception) }
             }
         }
     }

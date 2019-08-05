@@ -1,21 +1,24 @@
 package com.example.rostislav.pdfreader.core.di
 
 import android.content.Context
-import com.example.rostislav.pdfreader.model.database.DatabaseManager
-import com.example.rostislav.pdfreader.model.file.FileManagerImpl
-import com.example.rostislav.pdfreader.model.network.NetworkManager
+import com.example.rostislav.pdfreader.entity.exception.NoFileException
 import com.example.rostislav.pdfreader.repository.FileRepository
 import com.example.rostislav.pdfreader.repository.FileRepositoryImpl
 
 object RepositoryInjection {
-    fun provideRepository(context: Context): FileRepository {
+    fun provideFileRepository(context: Context): FileRepository {
         return FileRepositoryImpl(
             context,
-            ManagersInjection.get<NetworkManager>(),
-            ManagersInjection.get<FileManagerImpl>(),
-            ManagersInjection.get<DatabaseManager>()
+            ManagersInjection.get(),
+            ManagersInjection.get(),
+            ManagersInjection.get()
         )
     }
 
-    inline fun <reified T> create(context: Context): T = provideRepository(context) as T
+    inline fun <reified T> create(context: Context): T {
+        return when (T::class.java) {
+            FileRepository::class.java -> provideFileRepository(context) as T
+            else -> throw NoFileException()
+        }
+    }
 }

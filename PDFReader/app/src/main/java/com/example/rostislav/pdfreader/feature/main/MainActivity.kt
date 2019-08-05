@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.base.BaseActivity
 import com.example.rostislav.pdfreader.entity.FileData
 import com.example.rostislav.pdfreader.feature.book.BookActivity
@@ -11,14 +12,14 @@ import com.example.rostislav.pdfreader.utils.extension.openActivity
 import com.example.rostislav.pdfreader.utils.extension.visible
 import com.example.rostislav.pdfreader.utils.getExtraStringIntent
 import kotlinx.android.synthetic.main.activity_main.*
-
+import org.jetbrains.anko.toast
 
 class MainActivity : BaseActivity<View, Presenter>(), View {
     private lateinit var adapter: MainAdapter
 
     private val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-    override fun assignLayout() = com.example.rostislav.pdfreader.R.layout.activity_main
+    override fun assignLayout() = R.layout.activity_main
 
     override fun create() = MainPresenter(applicationContext)
 
@@ -27,11 +28,11 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         presenter.loadAllFiles()
         initRecycler()
         adapter.itemClickListener = { position, _ ->
-            //            if (adapter.isLoadingExist(position)) {
-            presenter.loadFile(adapter.items[position].url)
-//            } else {
-//                toast("File is already loading")
-//            }
+            if (adapter.isLoading(position)) {
+                toast(resources.getString(R.string.toast_text))
+            } else {
+                presenter.loadFile(adapter.items[position].url)
+            }
         }
     }
 

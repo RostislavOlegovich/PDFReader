@@ -4,9 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>> :
-    RecyclerView.Adapter<VH>() {
-
+abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
     val items: MutableList<T> = mutableListOf()
     var itemClickListener: ((Int, View) -> Unit)? = null
 
@@ -35,5 +33,6 @@ abstract class BaseAdapter<T, VH : BaseAdapter.BaseViewHolder<T>> :
 
     abstract class BaseViewHolder<T>(item: View) : RecyclerView.ViewHolder(item) {
         abstract fun bind(type: T)
+        abstract fun showProgress(currentProgress: Int)
     }
 }

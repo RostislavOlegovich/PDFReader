@@ -6,14 +6,15 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.os.Build
+import androidx.annotation.StringRes
 import com.example.rostislav.pdfreader.R
 
 object NotificationUtils {
     private const val CHANNEL_ID = "ForegroundServiceChannel"
     private const val CHANNEL_NAME = "Foreground Service Channel"
     private const val PROGRESS = 100
-    private const val CONTENT_TITLE = "New file"
-    private const val NOTIFICATION_TEXT = "Downloading..."
+    private const val CONTENT_TITLE = R.string.notification_content_title
+    private const val NOTIFICATION_TEXT = R.string.notification_text
 
     fun createNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -27,13 +28,20 @@ object NotificationUtils {
         }
     }
 
-    fun createNotification(context: Context): Notification {
+    fun createNotification(
+        context: Context,
+        progress: Int = PROGRESS,
+        @StringRes
+        contentTitle: Int = CONTENT_TITLE,
+        @StringRes
+        notificationText: Int = NOTIFICATION_TEXT
+    ): Notification {
         return Notification.Builder(context, CHANNEL_ID).apply {
             setSmallIcon(R.drawable.ic_launcher_foreground)
             setAutoCancel(true)
-            setProgress(PROGRESS, PROGRESS, false)
-            setContentTitle(CONTENT_TITLE)
-            style = Notification.BigTextStyle().bigText(NOTIFICATION_TEXT)
+            setProgress(PROGRESS, progress, false)
+            setContentTitle(context.getString(contentTitle))
+            style = Notification.BigTextStyle().bigText(context.getString(notificationText))
         }.build()
     }
 }

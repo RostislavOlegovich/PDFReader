@@ -141,7 +141,7 @@ public final class R {
         private string() {
         }
 
-        public static final int status_bar_notification_info_overflow = 0x7f0b002a;
+        public static final int status_bar_notification_info_overflow = 0x7f0b002c;
     }
 
     public static final class style {

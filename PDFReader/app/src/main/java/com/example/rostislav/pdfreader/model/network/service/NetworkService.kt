@@ -1,15 +1,25 @@
 package com.example.rostislav.pdfreader.model.network.service
 
+import android.app.NotificationManager
 import android.content.Intent
 import com.example.rostislav.pdfreader.core.base.BaseService
+import com.example.rostislav.pdfreader.core.observer.Observer
+import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.utils.NotificationUtils
 import com.example.rostislav.pdfreader.utils.getExtraStringIntent
 
-class NetworkService : BaseService() {
+class NetworkService : Observer<Data>, BaseService() {
+    lateinit var notificationManager: NotificationManager
+
+    override fun onObserve(data: Data) {
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(1, NotificationUtils.createNotification(applicationContext, data.progress.toInt()))
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START_SERVICE -> startForegroundService(intent.getStringExtra(getExtraStringIntent()))
-            ACTION_STOP_SERVICE -> stopService()
+            ACTION_STOP_SERVICE -> stopSelf()
         }
         return super.onStartCommand(intent, flags, startId)
     }

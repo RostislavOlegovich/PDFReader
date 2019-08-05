@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">PDFReader</string>
     <string name="percent_text_view">%1s%2s</string>
+    <string name="notification_content_title">New file</string>
+    <string name="notification_text">Downloading…</string>
+    <string name="toast_text">File is already loading…</string>
 </resources>

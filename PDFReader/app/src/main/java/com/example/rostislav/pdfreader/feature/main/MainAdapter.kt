@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.base.BaseAdapter
 import com.example.rostislav.pdfreader.entity.FileData
+import com.example.rostislav.pdfreader.utils.extension.gone
 import com.example.rostislav.pdfreader.utils.extension.inflate
 import com.example.rostislav.pdfreader.utils.extension.loadView
 import com.example.rostislav.pdfreader.utils.extension.visible
@@ -23,32 +24,10 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
         super.onBindViewHolder(holder, position)
         val itemProgress = items[position].url
         val currentProgress = mapOfProgress[itemProgress]
-        if (currentProgress != null && currentProgress != 100) {
-            holder.itemView.apply {
-                pbDownloading.apply {
-                    visible(true)
-                    progress = currentProgress
-                }
-                tvPercentage.apply {
-                    visible(true)
-                    text = resources.getString(
-                        R.string.percent_text_view,
-                        currentProgress.toString(),
-                        "%"
-                    )
-                }
-            }
-            if (currentProgress == 100) {
-                holder.itemView.apply {
-                    pbDownloading.apply {
-                        visible(false)
-                    }
-                    tvPercentage.apply {
-                        visible(false)
-                    }
-                    mapOfProgress.remove(itemProgress)
-                }
-            }
+        if (isLoading(position) && currentProgress != 100) {
+            holder.showProgress(currentProgress!!)
+        } else {
+            mapOfProgress.remove(itemProgress)
         }
     }
 
@@ -57,9 +36,9 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
         notifyItemChanged(items.indexOfFirst { fileData -> fileData.url == url })
     }
 
-    fun isLoadingExist(position: Int): Boolean {
+    fun isLoading(position: Int): Boolean {
         val itemProgress = items[position].url
-        return mapOfProgress[itemProgress] == null
+        return mapOfProgress[itemProgress] != null
     }
 
     class BookViewHolder(item: View) : BaseAdapter.BaseViewHolder<FileData>(item) {
@@ -67,8 +46,19 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
             itemView.apply {
                 ivBookTitle.loadView(itemView.context, File(type.thumbnail))
                 tvNameBook.text = type.fileName
-                pbDownloading.visible(false)
-                tvPercentage.visible(false)
+                gone(pbDownloading, tvPercentage)
+            }
+        }
+
+        override fun showProgress(currentProgress: Int) {
+            itemView.apply {
+                visible(pbDownloading, tvPercentage)
+                pbDownloading.progress = currentProgress
+                tvPercentage.text = resources.getString(
+                    R.string.percent_text_view,
+                    currentProgress.toString(),
+                    "%"
+                )
             }
         }
     }
