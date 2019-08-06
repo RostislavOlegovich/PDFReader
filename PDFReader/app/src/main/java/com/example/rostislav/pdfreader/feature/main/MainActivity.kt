@@ -8,9 +8,9 @@ import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.base.BaseActivity
 import com.example.rostislav.pdfreader.entity.FileData
 import com.example.rostislav.pdfreader.feature.book.BookActivity
+import com.example.rostislav.pdfreader.utils.StringUtils
 import com.example.rostislav.pdfreader.utils.extension.openActivity
 import com.example.rostislav.pdfreader.utils.extension.visible
-import com.example.rostislav.pdfreader.utils.getExtraStringIntent
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
@@ -51,7 +51,7 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
     }
 
     override fun fileDownloaded(data: String) {
-        openActivity(BookActivity::class.java) { putString(getExtraStringIntent(), data) }
+        openActivity(BookActivity::class.java) { putString(StringUtils.getExtraStringIntent(), data) }
         presenter.loadAllFiles()
     }
 

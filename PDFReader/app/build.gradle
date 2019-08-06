@@ -50,4 +50,8 @@ dependencies {
     implementation "com.facebook.stetho:stetho:$stetho_version"
     //Okio
     implementation "com.squareup.okio:okio:$okio_version"
+    //Lifecycle
+    implementation "android.arch.lifecycle:runtime:$lifecycle_version"
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    kapt "android.arch.lifecycle:compiler:$lifecycle_version"
 }

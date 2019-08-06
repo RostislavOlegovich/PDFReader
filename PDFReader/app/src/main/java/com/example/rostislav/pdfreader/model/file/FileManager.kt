@@ -1,9 +1,9 @@
 package com.example.rostislav.pdfreader.model.file
 
-import com.example.rostislav.pdfreader.core.base.BaseManager
+import com.example.rostislav.pdfreader.core.interfaces.Manager
 import java.io.File
 
-interface FileManager : BaseManager {
+interface FileManager : Manager {
     fun writeFile(byteArray: ByteArray, filename: String)
 
     fun readFile(localPath: String): File

@@ -2,8 +2,8 @@ package com.example.rostislav.pdfreader.model.database.room.utils
 
 import com.example.rostislav.pdfreader.model.database.room.FileDataRoom
 import com.example.rostislav.pdfreader.utils.NamesOfFiles
-import com.example.rostislav.pdfreader.utils.emptyString
-import com.example.rostislav.pdfreader.utils.getNameFromString
+import com.example.rostislav.pdfreader.utils.StringUtils.emptyString
+import com.example.rostislav.pdfreader.utils.StringUtils.getNameFromString
 
 object DatabaseCreator {
     val fileList = mutableListOf(

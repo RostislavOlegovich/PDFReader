@@ -3,7 +3,7 @@ package com.example.rostislav.pdfreader.model.database.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.rostislav.pdfreader.utils.emptyString
+import com.example.rostislav.pdfreader.utils.StringUtils.emptyString
 
 @Entity(tableName = "file_database")
 data class FileDataRoom(

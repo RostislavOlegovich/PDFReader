@@ -1,27 +1,39 @@
 package com.example.rostislav.pdfreader.model.network.service
 
-import android.app.NotificationManager
 import android.content.Intent
+import androidx.lifecycle.LifecycleObserver
 import com.example.rostislav.pdfreader.core.base.BaseService
 import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.utils.NotificationUtils
-import com.example.rostislav.pdfreader.utils.getExtraStringIntent
+import com.example.rostislav.pdfreader.utils.StringUtils
 
-class NetworkService : Observer<Data>, BaseService() {
-    lateinit var notificationManager: NotificationManager
-
-    override fun onObserve(data: Data) {
-        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(1, NotificationUtils.createNotification(applicationContext, data.progress.toInt()))
-    }
+class NetworkService : BaseService(), Observer<Data>, LifecycleObserver {
+    private var isAppVisible = true
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        network.getObservable().subscribe(this)
         when (intent?.action) {
-            ACTION_START_SERVICE -> startForegroundService(intent.getStringExtra(getExtraStringIntent()))
+            ACTION_START_FOREGROUND -> startForegroundService(intent.getStringExtra(StringUtils.getExtraStringIntent()))
+            ACTION_HIDE_NOTIFICATION -> isAppVisible = true
+            ACTION_SHOW_NOTIFICATION -> isAppVisible = false
             ACTION_STOP_SERVICE -> stopSelf()
         }
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    override fun onObserve(data: Data) {
+        if (isAppVisible) {
+            stopForeground(true)
+        } else {
+            startForeground(
+                SERVICE_FOREGROUND_ID,
+                NotificationUtils.createNotification(applicationContext, data.progress.toInt())
+            )
+        }
+    }
+
+    override fun onError(exception: Throwable) {
     }
 
     private fun startForegroundService(url: String?) {
@@ -34,8 +46,10 @@ class NetworkService : Observer<Data>, BaseService() {
     }
 
     companion object {
-        private const val ACTION_START_SERVICE = "start_service"
+        private const val ACTION_START_FOREGROUND = "start_service"
         private const val ACTION_STOP_SERVICE = "stop_service"
-        private const val SERVICE_FOREGROUND_ID = 1
+        private const val ACTION_HIDE_NOTIFICATION = "hide"
+        private const val ACTION_SHOW_NOTIFICATION = "show"
+        private const val SERVICE_FOREGROUND_ID = 1000
     }
 }

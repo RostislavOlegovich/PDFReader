@@ -2,11 +2,11 @@ package com.example.rostislav.pdfreader.repository
 
 import android.content.Context
 import com.example.rostislav.pdfreader.entity.FileData
+import com.example.rostislav.pdfreader.entity.exception.FileNotExistException
 import com.example.rostislav.pdfreader.model.database.Database
 import com.example.rostislav.pdfreader.model.file.FileManager
 import com.example.rostislav.pdfreader.model.network.Network
-import com.example.rostislav.pdfreader.utils.getNameFromString
-import com.example.rostislav.pdfreader.utils.system.FileNotExistException
+import com.example.rostislav.pdfreader.utils.StringUtils
 import java.io.File
 
 class FileRepositoryImpl(
@@ -23,7 +23,7 @@ class FileRepositoryImpl(
             file
         } else {
             download(url)
-            throw FileNotExistException(null)
+            throw FileNotExistException(url)
         }
     }
 
@@ -36,7 +36,7 @@ class FileRepositoryImpl(
     }
 
     private fun write(byteArray: ByteArray, url: String) {
-        val filename = getNameFromString(url)
+        val filename = StringUtils.getNameFromString(url)
         fileManager.writeFile(byteArray, filename)
         val filePath = File(context.filesDir, filename).absolutePath
         val file = fileManager.readFile(filePath)

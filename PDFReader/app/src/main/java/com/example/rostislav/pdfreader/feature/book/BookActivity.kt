@@ -3,7 +3,7 @@ package com.example.rostislav.pdfreader.feature.book
 import android.os.Bundle
 import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.core.base.BaseActivity
-import com.example.rostislav.pdfreader.utils.getExtraStringIntent
+import com.example.rostislav.pdfreader.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_book.*
 import java.io.File
 
@@ -14,7 +14,7 @@ class BookActivity : BaseActivity<BookView, BookPresenterImpl>(), BookView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val file = (intent.getStringExtra(getExtraStringIntent()))!!
+        val file = (intent.getStringExtra(StringUtils.getExtraStringIntent()))!!
         presenter.readFromStorage(file)
     }
 

@@ -1,7 +1,7 @@
 package com.example.rostislav.pdfreader.core.base
 
 import android.content.Context
-import com.example.rostislav.pdfreader.core.configuration.Configuration
+import com.example.rostislav.pdfreader.core.di.ConcurrencyInjection
 import com.example.rostislav.pdfreader.core.di.RepositoryInjection
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
@@ -9,8 +9,8 @@ import com.example.rostislav.pdfreader.repository.FileRepository
 
 abstract class BasePresenter<V : MVPView>(context: Context) : MVPPresenter<V> {
     val repository = RepositoryInjection.create<FileRepository>(context)
-    val executors = Configuration.executors
-    val handler = Configuration.handler
+    val executors = ConcurrencyInjection.executors
+    val handler = ConcurrencyInjection.handler
 
     override var view: V? = null
 

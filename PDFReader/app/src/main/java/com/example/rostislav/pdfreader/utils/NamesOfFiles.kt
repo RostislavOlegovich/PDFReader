@@ -2,9 +2,9 @@ package com.example.rostislav.pdfreader.utils
 
 object NamesOfFiles {
     const val FILE_NAME_1 = "https://www.telc.net/fileadmin/user_upload/telc_english_b2_uebungstest_1.pdf"
-    const val FILE_NAME_2 = "https://upload.wikimedia.org/wikipedia/commons/b/b3/C_Sharp_Programming.pdf"
-    const val FILE_NAME_3 = "https://upload.wikimedia.org/wikipedia/commons/3/38/European_History.pdf"
-    const val FILE_NAME_4 = "https://upload.wikimedia.org/wikipedia/commons/e/e6/E-Commerce_and_E-Business.pdf"
+    const val FILE_NAME_2 = "https://upload.wikimedia.org/wikipedia/commons/2/2d/LaTeX.pdf"
+    const val FILE_NAME_3 = "https://www.hq.nasa.gov/alsj/a17/A17_FlightPlan.pdf"
+    const val FILE_NAME_4 = "https://www.iso.org/files/live/sites/isoorg/files/archive/pdf/en/annual_report_2009.pdf"
     const val FILE_NAME_5 = "https://upload.wikimedia.org/wikipedia/commons/b/b8/Social_Web.pdf"
     const val FILE_NAME_6 = "https://upload.wikimedia.org/wikipedia/commons/7/7a/Robotics.pdf"
     const val FILE_NAME_7 = "https://upload.wikimedia.org/wikipedia/commons/4/42/Spanish.pdf"

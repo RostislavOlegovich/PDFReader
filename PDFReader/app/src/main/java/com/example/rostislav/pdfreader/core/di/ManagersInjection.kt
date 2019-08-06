@@ -1,7 +1,7 @@
 package com.example.rostislav.pdfreader.core.di
 
 import android.content.Context
-import com.example.rostislav.pdfreader.core.base.BaseManager
+import com.example.rostislav.pdfreader.core.interfaces.Manager
 import com.example.rostislav.pdfreader.model.database.Database
 import com.example.rostislav.pdfreader.model.database.DatabaseManager
 import com.example.rostislav.pdfreader.model.file.FileManager
@@ -12,7 +12,7 @@ import com.example.rostislav.pdfreader.model.presenter.PresenterManager
 import com.example.rostislav.pdfreader.model.presenter.PresenterManagerImpl
 
 object ManagersInjection {
-    val managers = mutableListOf<BaseManager>()
+    val managers = mutableListOf<Manager>()
 
     fun setup(context: Context) {
         managers.add(PresenterManagerImpl() as PresenterManager)

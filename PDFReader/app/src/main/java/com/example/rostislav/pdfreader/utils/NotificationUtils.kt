@@ -4,17 +4,17 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
 import android.os.Build
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.app.NotificationCompat
 import com.example.rostislav.pdfreader.R
+import com.example.rostislav.pdfreader.utils.extension.getNotificationManager
 
 object NotificationUtils {
     private const val CHANNEL_ID = "ForegroundServiceChannel"
     private const val CHANNEL_NAME = "Foreground Service Channel"
     private const val PROGRESS = 100
-    private const val CONTENT_TITLE = R.string.notification_content_title
-    private const val NOTIFICATION_TEXT = R.string.notification_text
 
     fun createNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -23,25 +23,26 @@ object NotificationUtils {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(serviceChannel)
+            context.getNotificationManager().createNotificationChannel(serviceChannel)
         }
     }
 
     fun createNotification(
         context: Context,
-        progress: Int = PROGRESS,
+        progress: Int = 0,
         @StringRes
-        contentTitle: Int = CONTENT_TITLE,
+        contentTitle: Int = R.string.notification_content_title,
         @StringRes
-        notificationText: Int = NOTIFICATION_TEXT
+        notificationText: Int = R.string.notification_text,
+        @DrawableRes
+        drawable: Int = R.drawable.ic_launcher_foreground
     ): Notification {
-        return Notification.Builder(context, CHANNEL_ID).apply {
-            setSmallIcon(R.drawable.ic_launcher_foreground)
+        return NotificationCompat.Builder(context, CHANNEL_ID).apply {
+            setSmallIcon(drawable)
             setAutoCancel(true)
             setProgress(PROGRESS, progress, false)
             setContentTitle(context.getString(contentTitle))
-            style = Notification.BigTextStyle().bigText(context.getString(notificationText))
+            setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(notificationText)))
         }.build()
     }
 }

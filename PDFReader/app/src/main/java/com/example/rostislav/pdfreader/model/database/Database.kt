@@ -1,9 +1,9 @@
 package com.example.rostislav.pdfreader.model.database
 
-import com.example.rostislav.pdfreader.core.base.BaseManager
+import com.example.rostislav.pdfreader.core.interfaces.Manager
 import com.example.rostislav.pdfreader.entity.FileData
 
-interface Database : BaseManager {
+interface Database : Manager {
     fun insert()
 
     fun delete(fileData: FileData)

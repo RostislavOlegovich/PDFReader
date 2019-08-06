@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
-import com.example.rostislav.pdfreader.utils.changeName
+import com.example.rostislav.pdfreader.utils.StringUtils.changeName
 import java.io.File
 import java.io.FileOutputStream
 

@@ -1,11 +1,11 @@
 package com.example.rostislav.pdfreader.model.network
 
-import com.example.rostislav.pdfreader.core.base.BaseManager
+import com.example.rostislav.pdfreader.core.interfaces.Manager
 import com.example.rostislav.pdfreader.core.observer.Observable
 import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 
-interface Network : BaseManager {
+interface Network : Manager {
     fun startNetworkService(url: String, callBack: ((ByteArray) -> Unit)?)
 
     fun downloadFromNetwork(url: String): ByteArray
@@ -13,4 +13,8 @@ interface Network : BaseManager {
     fun returnBytesArray(bytes: ByteArray)
 
     fun getObservable(): Observable<Data, Observer<Data>>
+
+    fun showNotification()
+
+    fun hideNotification()
 }
