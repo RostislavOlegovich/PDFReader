@@ -1,6 +1,7 @@
 package com.example.rostislav.pdfreader.feature.main
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -34,29 +35,13 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
                 presenter.loadFile(adapter.items[position].url)
             }
         }
-    }
-
-    override fun show(data: List<FileData>) {
-        adapter.replace(data as MutableList<FileData>)
+        presenterListener()
     }
 
     override fun error(exception: Throwable) {
         rvBooks.visible(false)
         tvError.visible(true)
         tvError.text = exception.toString()
-    }
-
-    override fun showThumbnail() {
-        presenter.loadAllFiles()
-    }
-
-    override fun fileDownloaded(data: String) {
-        openActivity(BookActivity::class.java) { putString(StringUtils.getExtraStringIntent(), data) }
-        presenter.loadAllFiles()
-    }
-
-    override fun loadingProgress(progress: Long, url: String) {
-        adapter.setProgressDownloading(progress.toInt(), url)
     }
 
     private fun initRecycler() {
@@ -66,5 +51,37 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         LinearSnapHelper().attachToRecyclerView(rvBooks)
         rvBooks.layoutManager = layoutManager
         rvBooks.adapter = adapter
+    }
+
+    private fun showThumbnail() {
+        presenter.loadAllFiles()
+    }
+
+    private fun fileDownloaded(url: String) {
+        openActivity(BookActivity::class.java) { putString(StringUtils.getExtraStringIntent(), url) }
+        presenter.loadAllFiles()
+    }
+
+    private fun loadingProgress(progress: Long, url: String) {
+        adapter.setProgressDownloading(progress.toInt(), url)
+    }
+
+    private fun show(data: List<FileData>) {
+        adapter.replace(data as MutableList<FileData>)
+    }
+
+    private fun presenterListener() {
+        presenter
+            .loadingProgressLD
+            .observe(this, Observer { data -> loadingProgress(data.progress, data.url) })
+        presenter
+            .fileDownloadedLD
+            .observe(this, Observer { url -> fileDownloaded(url) })
+        presenter
+            .showListLD
+            .observe(this, Observer { fileDataList -> show(fileDataList) })
+        presenter
+            .showThumbnailLD
+            .observe(this, Observer { showThumbnail() })
     }
 }
