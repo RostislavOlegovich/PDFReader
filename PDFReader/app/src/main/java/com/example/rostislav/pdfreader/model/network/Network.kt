@@ -10,11 +10,7 @@ interface Network : Manager {
 
     fun downloadFromNetwork(url: String): ByteArray
 
-    fun returnBytesArray(bytes: ByteArray)
+    fun stopNetworkService(bytes: ByteArray)
 
     fun getObservable(): Observable<Data, Observer<Data>>
-
-    fun showNotification()
-
-    fun hideNotification()
 }

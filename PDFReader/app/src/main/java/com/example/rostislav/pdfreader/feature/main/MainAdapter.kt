@@ -24,7 +24,7 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
         super.onBindViewHolder(holder, position)
         val itemProgress = items[position].url
         val currentProgress = mapOfProgress[itemProgress]
-        if (isLoading(position) && currentProgress != 100) {
+        if (isLoading(position) && currentProgress != MAX_PROGRESS) {
             holder.showProgress(currentProgress!!)
         } else {
             mapOfProgress.remove(itemProgress)
@@ -61,5 +61,9 @@ class MainAdapter : BaseAdapter<FileData, BaseAdapter.BaseViewHolder<FileData>>(
                 )
             }
         }
+    }
+
+    companion object {
+        private const val MAX_PROGRESS = 100
     }
 }

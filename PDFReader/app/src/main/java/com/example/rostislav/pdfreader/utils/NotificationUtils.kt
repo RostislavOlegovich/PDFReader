@@ -4,12 +4,13 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import com.example.rostislav.pdfreader.R
+import com.example.rostislav.pdfreader.utils.extension.getNotificationBuilder
 import com.example.rostislav.pdfreader.utils.extension.getNotificationManager
+import com.example.rostislav.pdfreader.utils.system.AndroidAPIChecker
 
 object NotificationUtils {
     private const val CHANNEL_ID = "ForegroundServiceChannel"
@@ -17,7 +18,7 @@ object NotificationUtils {
     private const val PROGRESS = 100
 
     fun createNotificationChannel(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (AndroidAPIChecker.checkAndroidAPI()) {
             val serviceChannel = NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
@@ -37,7 +38,7 @@ object NotificationUtils {
         @DrawableRes
         drawable: Int = R.drawable.ic_launcher_foreground
     ): Notification {
-        return NotificationCompat.Builder(context, CHANNEL_ID).apply {
+        return context.getNotificationBuilder(CHANNEL_ID).apply {
             setSmallIcon(drawable)
             setAutoCancel(true)
             setProgress(PROGRESS, progress, false)

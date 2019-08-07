@@ -18,8 +18,10 @@ fun View.visible(boolean: Boolean) {
     }
 }
 
+@Suppress("unused")
 fun View.gone(vararg views: View) = views.forEach { it.visibility = View.GONE }
 
+@Suppress("unused")
 fun View.visible(vararg views: View) = views.forEach { it.visibility = View.VISIBLE }
 
 fun ImageView.loadView(context: Context, file: File) {

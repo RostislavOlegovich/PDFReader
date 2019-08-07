@@ -12,32 +12,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 class NetworkManager(private val context: Context) : Network, Observable<Data, Observer<Data>> by BaseObservable() {
-    private val list = mutableListOf<String>()
-
     private var callback: ((ByteArray) -> Unit)? = null
 
-    override fun showNotification() {
-        if (list.isNotEmpty()) {
-            context.startService(
-                context.createIntent(
-                    NetworkService::class.java, ACTION_SHOW_NOTIFICATION
-                )
-            )
-        }
-    }
-
-    override fun hideNotification() {
-        if (list.isNotEmpty()) {
-            context.startService(
-                context.createIntent(
-                    NetworkService::class.java, ACTION_HIDE_NOTIFICATION
-                )
-            )
-        }
-    }
-
     override fun startNetworkService(url: String, callBack: ((ByteArray) -> Unit)?) {
-        list.add(url)
         callback = callBack
         val serviceIntent = context.createIntent(NetworkService::class.java, ACTION_START_FOREGROUND) {
             putString(getExtraStringIntent(), url)
@@ -60,8 +37,7 @@ class NetworkManager(private val context: Context) : Network, Observable<Data, O
         return response.body!!.bytes()
     }
 
-    override fun returnBytesArray(bytes: ByteArray) {
-        list.removeAt(INDEX)
+    override fun stopNetworkService(bytes: ByteArray) {
         callback?.invoke(bytes)
         context.startService(context.createIntent(NetworkService::class.java, ACTION_STOP_SERVICE))
     }
@@ -71,8 +47,5 @@ class NetworkManager(private val context: Context) : Network, Observable<Data, O
     companion object {
         private const val ACTION_START_FOREGROUND = "start_service"
         private const val ACTION_STOP_SERVICE = "stop_service"
-        private const val ACTION_HIDE_NOTIFICATION = "hide"
-        private const val ACTION_SHOW_NOTIFICATION = "show"
-        private const val INDEX = 0
     }
 }
