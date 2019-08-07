@@ -21,7 +21,7 @@ abstract class BaseService : Service() {
         return START_STICKY
     }
 
-    override fun onBind(p0: Intent?): IBinder? {
+    override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 }
