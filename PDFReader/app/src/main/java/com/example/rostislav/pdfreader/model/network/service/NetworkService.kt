@@ -62,12 +62,12 @@ class NetworkService : BaseService(), Observer<Data>, LifecycleObserver {
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun pshowNotification() {
+    fun showNotification() {
         if (list.isNotEmpty()) network.getObservable().subscribe(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun phideNotification() {
+    fun hideNotification() {
         if (list.isNotEmpty()) {
             network.getObservable().unsubscribe(this)
             stopForeground(true)
