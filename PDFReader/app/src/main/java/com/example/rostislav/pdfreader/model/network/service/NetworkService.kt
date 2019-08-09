@@ -46,10 +46,12 @@ class NetworkService : Observer<Data> by BaseObserver(), ServiceLifecycleObserve
 
     override fun startServiceForeground(intent: Intent) {
         val url = intent.getStringExtra(StringUtils.getExtraStringIntent())
-        listOfUrls.add(url)
-        setupForeground()
-        val bytes = network.downloadFromNetwork(url)
-        network.stopNetworkService(bytes, url)
+        url?.let {
+            listOfUrls.add(url)
+            setupForeground()
+            val bytes = network.downloadFromNetwork(url)
+            network.stopNetworkService(bytes, url)
+        }
     }
 
     override fun stopServiceForeground(int: Int) {

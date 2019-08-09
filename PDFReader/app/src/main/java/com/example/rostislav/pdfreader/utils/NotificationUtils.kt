@@ -9,7 +9,7 @@ import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import com.example.rostislav.pdfreader.R
 import com.example.rostislav.pdfreader.utils.extension.getNotificationBuilder
-import com.example.rostislav.pdfreader.utils.extension.getNotificationManager
+import com.example.rostislav.pdfreader.utils.extension.notificationManager
 import com.example.rostislav.pdfreader.utils.system.AndroidAPIChecker
 
 object NotificationUtils {
@@ -24,7 +24,7 @@ object NotificationUtils {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            context.getNotificationManager().createNotificationChannel(serviceChannel)
+            context.notificationManager.createNotificationChannel(serviceChannel)
         }
     }
 
