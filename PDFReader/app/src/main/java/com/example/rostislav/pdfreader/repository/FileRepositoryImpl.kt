@@ -16,11 +16,12 @@ class FileRepositoryImpl(
     private val database: Database
 
 ) : FileRepository {
-    override fun loadFile(url: String): File {
+
+    override fun loadFile(url: String): FileData {
         val fileData = database.getData(url)
         val file = fileManager.readFile(fileData.localPath)
         return if (file.exists()) {
-            file
+            fileData
         } else {
             download(url)
             throw FileNotExistException(url)
@@ -29,10 +30,12 @@ class FileRepositoryImpl(
 
     override fun loadAllFiles() = database.getAllData()
 
-    override fun getObservable() = network.getObservable()
+    override fun getObservableNetwork() = network.getObservable()
+
+    override fun getObservableDatabase() = database.getObservable()
 
     private fun download(url: String) {
-        network.startNetworkService(url) { byteArray -> write(byteArray, url) }
+        network.startNetworkService(url) { byteArray, urla -> write(byteArray, urla) }
     }
 
     private fun write(byteArray: ByteArray, url: String) {

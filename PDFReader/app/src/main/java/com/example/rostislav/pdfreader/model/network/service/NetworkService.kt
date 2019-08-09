@@ -1,32 +1,31 @@
 package com.example.rostislav.pdfreader.model.network.service
 
 import android.content.Intent
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ProcessLifecycleOwner
-import com.example.rostislav.pdfreader.core.base.BaseService
+import android.os.HandlerThread
+import com.example.rostislav.pdfreader.core.base.BaseObserver
+import com.example.rostislav.pdfreader.core.base.ServiceLifecycleObserver
 import com.example.rostislav.pdfreader.core.observer.Observer
 import com.example.rostislav.pdfreader.entity.Data
 import com.example.rostislav.pdfreader.utils.NotificationUtils
 import com.example.rostislav.pdfreader.utils.StringUtils
 
-class NetworkService : BaseService(), Observer<Data>, LifecycleObserver {
-    private val list = mutableListOf<String>()
+class NetworkService : Observer<Data> by BaseObserver(), ServiceLifecycleObserver(), ServiceHandler {
+    private val listOfUrls = mutableListOf<String>()
+
+    private lateinit var serviceHandler: ServiceHandlerImpl
 
     override fun onCreate() {
         super.onCreate()
-        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+        val thread = HandlerThread("Service")
+        thread.start()
+        serviceHandler = ServiceHandlerImpl(thread.looper, this)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        intent?.let {
-            when (intent.action) {
-                ACTION_START_FOREGROUND -> startForegroundService(intent.getStringExtra(StringUtils.getExtraStringIntent()))
-                ACTION_STOP_SERVICE -> stopForegroundService()
-            }
-        }
-        return super.onStartCommand(intent, flags, startId)
+    override fun onStart(intent: Intent?, startId: Int) {
+        val msg = serviceHandler.obtainMessage()
+        msg.arg1 = startId
+        msg.obj = intent
+        serviceHandler.sendMessage(msg)
     }
 
     override fun onObserve(data: Data) {
@@ -36,47 +35,34 @@ class NetworkService : BaseService(), Observer<Data>, LifecycleObserver {
         )
     }
 
-    override fun onError(exception: Throwable) {
+    override fun showNotification() {
+        if (listOfUrls.isNotEmpty()) network.getObservable().subscribe(this)
     }
 
-    private fun stopForegroundService() {
-        list.removeAt(INDEX)
-        stopSelf()
+    override fun hideNotification() {
+        network.getObservable().unsubscribe(this)
+        stopForeground(true)
     }
 
-    private fun startForegroundService(url: String?) {
-        url?.let {
-            list.add(url)
-            setupForegroundUtils()
-            executor.execute {
-                val bytes = network.downloadFromNetwork(url)
-                network.stopNetworkService(bytes)
-            }
-        }
+    override fun startServiceForeground(intent: Intent) {
+        val url = intent.getStringExtra(StringUtils.getExtraStringIntent())
+        listOfUrls.add(url)
+        setupForeground()
+        val bytes = network.downloadFromNetwork(url)
+        network.stopNetworkService(bytes, url)
     }
 
-    private fun setupForegroundUtils() {
-        NotificationUtils.createNotificationChannel(applicationContext)
+    override fun stopServiceForeground(int: Int) {
+        listOfUrls.removeAt(INDEX)
+        stopSelf(int)
+    }
+
+    private fun setupForeground() {
         startForeground(SERVICE_FOREGROUND_ID, NotificationUtils.createNotification(applicationContext))
         stopForeground(true)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun showNotification() {
-        if (list.isNotEmpty()) network.getObservable().subscribe(this)
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun hideNotification() {
-        if (list.isNotEmpty()) {
-            network.getObservable().unsubscribe(this)
-            stopForeground(true)
-        }
-    }
-
     companion object {
-        private const val ACTION_START_FOREGROUND = "start_service"
-        private const val ACTION_STOP_SERVICE = "stop_service"
         private const val SERVICE_FOREGROUND_ID = 1000
         private const val INDEX = 0
     }

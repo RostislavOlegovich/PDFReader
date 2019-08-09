@@ -3,6 +3,7 @@ package com.example.rostislav.pdfreader.core.base
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import com.example.rostislav.pdfreader.core.di.ManagersInjection
 import com.example.rostislav.pdfreader.core.mvp.MVPPresenter
 import com.example.rostislav.pdfreader.core.mvp.MVPView
@@ -51,6 +52,10 @@ abstract class BaseActivity<V : MVPView, P : MVPPresenter<V>> : AppCompatActivit
         } else {
             UUID.randomUUID().toString()
         }
+    }
+
+    inline fun <reified L : LiveData<T>, T> observe(liveData: LiveData<T>, noinline block: (T) -> (Unit)) {
+        liveData.observe(this, androidx.lifecycle.Observer(block))
     }
 
     companion object {

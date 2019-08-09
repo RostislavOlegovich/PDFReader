@@ -17,7 +17,7 @@ object NotificationUtils {
     private const val CHANNEL_NAME = "Foreground Service Channel"
     private const val PROGRESS = 100
 
-    fun createNotificationChannel(context: Context) {
+    private fun createNotificationChannel(context: Context) {
         if (AndroidAPIChecker.checkAndroidAPI()) {
             val serviceChannel = NotificationChannel(
                 CHANNEL_ID,
@@ -37,13 +37,29 @@ object NotificationUtils {
         notificationText: Int = R.string.notification_text,
         @DrawableRes
         drawable: Int = R.drawable.ic_launcher_foreground
+    ): Notification = createNotification(
+        context,
+        progress,
+        context.getString(contentTitle),
+        context.getString(notificationText),
+        drawable
+    )
+
+    fun createNotification(
+        context: Context,
+        progress: Int = 0,
+        contentTitle: String,
+        notificationText: String,
+        @DrawableRes
+        drawable: Int = R.drawable.ic_launcher_foreground
     ): Notification {
+        createNotificationChannel(context)
         return context.getNotificationBuilder(CHANNEL_ID).apply {
             setSmallIcon(drawable)
             setAutoCancel(true)
             setProgress(PROGRESS, progress, false)
-            setContentTitle(context.getString(contentTitle))
-            setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(notificationText)))
+            setContentTitle(contentTitle)
+            setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
         }.build()
     }
 }

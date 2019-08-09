@@ -12,9 +12,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 class NetworkManager(private val context: Context) : Network, Observable<Data, Observer<Data>> by BaseObservable() {
-    private var callback: ((ByteArray) -> Unit)? = null
+    private var callback: ((ByteArray, String) -> Unit)? = null
 
-    override fun startNetworkService(url: String, callBack: ((ByteArray) -> Unit)?) {
+    override fun startNetworkService(url: String, callBack: ((ByteArray, String) -> Unit)?) {
         callback = callBack
         val serviceIntent = context.createIntent(NetworkService::class.java, ACTION_START_FOREGROUND) {
             putString(getExtraStringIntent(), url)
@@ -37,8 +37,8 @@ class NetworkManager(private val context: Context) : Network, Observable<Data, O
         return response.body!!.bytes()
     }
 
-    override fun stopNetworkService(bytes: ByteArray) {
-        callback?.invoke(bytes)
+    override fun stopNetworkService(bytes: ByteArray, url: String) {
+        callback?.invoke(bytes, url)
         context.startService(context.createIntent(NetworkService::class.java, ACTION_STOP_SERVICE))
     }
 

@@ -3,31 +3,26 @@ package com.example.rostislav.pdfreader.core.base
 import android.os.Looper
 import com.example.rostislav.pdfreader.core.observer.Observable
 import com.example.rostislav.pdfreader.core.observer.Observer
-import com.example.rostislav.pdfreader.entity.Data
 
-open class BaseObservable : Observable<Data, Observer<Data>> {
+open class BaseObservable<T> : Observable<T, Observer<T>> {
     private val handler = android.os.Handler(Looper.getMainLooper())
-    private val observers = mutableListOf<Observer<Data>>()
+    private val observers = mutableListOf<Observer<T>>()
 
-    override fun subscribe(observer: Observer<Data>) {
+    override fun subscribe(observer: Observer<T>) {
         observers.add(observer)
     }
 
-    override fun unsubscribe(observer: Observer<Data>) {
+    override fun unsubscribe(observer: Observer<T>) {
         observers.remove(observer)
     }
 
-    override fun isSubscribed(observer: Observer<Data>) = observers.contains(observer)
+    override fun isSubscribed(observer: Observer<T>) = observers.contains(observer)
 
-    override fun notifyObserversChange(data: Data) {
-        handler.postDelayed({ observers.forEach { it.onObserve(data) } }, TIMEOUT)
+    override fun notifyObserversChange(data: T) {
+        handler.post { observers.forEach { it.onObserve(data) } }
     }
 
     override fun notifyObserversError(exception: Throwable) {
         handler.post { observers.forEach { it.onError(exception) } }
-    }
-
-    companion object {
-        const val TIMEOUT = 300L
     }
 }

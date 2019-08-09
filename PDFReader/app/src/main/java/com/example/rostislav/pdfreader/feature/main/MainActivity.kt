@@ -1,7 +1,6 @@
 package com.example.rostislav.pdfreader.feature.main
 
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -53,7 +52,7 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
         rvBooks.adapter = adapter
     }
 
-    private fun showThumbnail() {
+    private fun showThumbnail(fileData: FileData) {
         presenter.loadAllFiles()
     }
 
@@ -71,17 +70,9 @@ class MainActivity : BaseActivity<View, Presenter>(), View {
     }
 
     private fun presenterListener() {
-        presenter
-            .loadingProgressLD
-            .observe(this, Observer { data -> loadingProgress(data.progress, data.url) })
-        presenter
-            .fileDownloadedLD
-            .observe(this, Observer { url -> fileDownloaded(url) })
-        presenter
-            .showListLD
-            .observe(this, Observer { fileDataList -> show(fileDataList) })
-        presenter
-            .showThumbnailLD
-            .observe(this, Observer { showThumbnail() })
+        observe(presenter.loadingProgressLD) { data -> loadingProgress(data.progress, data.url) }
+        observe(presenter.fileDownloadedLD) { url -> fileDownloaded(url) }
+        observe(presenter.showListLD) { fileDataList -> show(fileDataList) }
+        observe(presenter.showThumbnailLD) { fileData -> showThumbnail(fileData) }
     }
 }

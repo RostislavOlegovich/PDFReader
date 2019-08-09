@@ -13,7 +13,7 @@ interface Presenter : MVPPresenter<View> {
 
     val fileDownloadedLD: LiveData<String>
 
-    val showThumbnailLD: LiveData<Unit>
+    val showThumbnailLD: LiveData<FileData>
 
     val loadingProgressLD: LiveData<Data>
 
